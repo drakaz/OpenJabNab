@@ -1,4 +1,10 @@
 <?php
+/*
+
+Basic Display Class
+
+*/
+
 class ojnTemplate {
 	private $titre_alt	= "";
 	private $titre	= "openJabNab";
@@ -6,20 +12,19 @@ class ojnTemplate {
 	private $Api;
 	private $UInfos;
 
+	// ### CONSTRUCT ##############################################################################################
 	public function __construct(&$api) {
 		$this->Api=$api;
 	}
 
+	// ### PUBLIC METHODS #########################################################################################
+
+	// ------------------------------------------------------------------------------------------------------------
 	public function setUInfos($v) {
 		$this->UInfos = $v;
 	}
 
-	private function translate($page)
-	{
-		global $translations;
-		return preg_replace(array_map('toRegex', array_keys($translations)), $translations, $page);
-	}
-
+	// ------------------------------------------------------------------------------------------------------------
 	public function display($buffer) {
 		$template = file_get_contents(ROOT_SITE.'class/template.tpl.php');
 		$Stats = $this->Api->getStats(false);
@@ -48,29 +53,37 @@ class ojnTemplate {
 			);
 
 		$template = preg_replace($pattern, $replace, $template);
-		if(preg_match("|<body>(.*)</body>|s", $template, $match))
-		{
+		if(preg_match("|<body>(.*)</body>|s", $template, $match)){
 			$body = $this->translate($match[1]);
 			$template = preg_replace("|<body>(.*)</body>|s", $body, $template);
 		}
 		return $template;
-        }
+	}
 
+	// ### PRIVATES METHODS #########################################################################################
+	// ------------------------------------------------------------------------------------------------------------
+	private function translate($page){
+		global $translations;
+		return preg_replace(array_map('toRegex', array_keys($translations)), $translations, $page);
+	}
+
+	// ------------------------------------------------------------------------------------------------------------
 	private function makeMenu() {
 		$menu = '<a href="index.php">Accueil</a>';
 		if(isset($_SESSION['token']))	{
-            $menu .= ' | <a href="account.php">Account</a>';
+			$menu .= ' | <a href="account.php">Account</a>';
 			$menu .= ' | <a href="bunny.php">Lapin</a>';
 			$menu .= ' | <a href="ztamp.php?z">Ztamps</a>';
 			if($this->UInfos['isAdmin']) {
 				$menu .= ' | <a href="server.php">Serveur</a>';
 				$menu .= ' | <a href="api.php">Raw API call</a>';
 			}
-            $menu .= ' | <a href="index.php?logout">Logout ('.$this->UInfos['username'].')</a>';
+			$menu .= ' | <a href="index.php?logout">Logout ('.$this->UInfos['username'].')</a>';
 		}
 		return $menu;
 	}
 
+	// ------------------------------------------------------------------------------------------------------------
 	private function makeBunnyMenu()	{
 		$menu = "";
 		if($this->UInfos['token'] != '') {
@@ -83,8 +96,11 @@ class ojnTemplate {
 		return !empty($menu) ? $menu : '<li>No Bunny</li>';
 	}
 }
-function toRegex($str)
-{
+
+// ### GLOBAL FUNCTIONS #########################################################################################
+
+// ------------------------------------------------------------------------------------------------------------
+function toRegex($str) {
 	return "|".$str."|";
 }
 ?>
