@@ -68,19 +68,32 @@ class ojnTemplate {
 	}
 
 	// ------------------------------------------------------------------------------------------------------------
-	private function makeMenu() {
+	private function makeMenu($current_url='') {
 		$menu = '<a href="index.php">Accueil</a>';
+		$menus['Accueil']='index.php';
 		if(isset($_SESSION['token']))	{
-			$menu .= ' | <a href="account.php">Account</a>';
-			$menu .= ' | <a href="bunny.php">Lapin</a>';
-			$menu .= ' | <a href="ztamp.php?z">Ztamps</a>';
+			$menus['Compte']='account.php';
+			$menus['Lapin']	='bunny.php';
+			$menus['Ztamps']='ztamp.php';
 			if($this->UInfos['isAdmin']) {
-				$menu .= ' | <a href="server.php">Serveur</a>';
-				$menu .= ' | <a href="api.php">Raw API call</a>';
+				$menus['Serveur']	='server.php';
+				$menus['Raw API call']	='api.php';
 			}
-			$menu .= ' | <a href="index.php?logout">Logout ('.$this->UInfos['username'].')</a>';
+			$menus['Logout ('.$this->UInfos['username'].')']='index.php?logout';
 		}
-		return $menu;
+
+		$i=count($menus);
+		$separator=' | '; 	//old menu
+		$separator=''; 		//removed
+		$current_url or $current_url=basename($_SERVER['REQUEST_URI']);
+		$current_url = preg_replace('#^$#','index.php',$current_url);
+		foreach ($menus as $name => $url) {
+			if($url==$current_url){$class="selected";}else{$class="";}
+			$html .="<a href='$url' class='$class'>$name</a>";
+			$i--;
+			$i and $html .=$separator;
+		}
+		return $html;
 	}
 
 	// ------------------------------------------------------------------------------------------------------------
@@ -89,12 +102,18 @@ class ojnTemplate {
 		if($this->UInfos['token'] != '') {
 			$online = $this->Api->getListOfConnectedBunnies(false);
 			$bunnies = $this->Api->getListOfBunnies(false);
-			if(!empty($bunnies))
-				foreach($bunnies as $mac => $bunny)
-					$menu .= '<li'.(isset($online[$mac]) ? ' class="online"' : '').'><a href="bunny.php?b='.$mac.'" alt="'.$mac.'" title="'.$mac.'">'.($bunny != "Bunny" ? $bunny : $mac).'</a></li>';
+			if(!empty($bunnies)){
+				asort($bunnies);
+				foreach($bunnies as $mac => $bunny){
+					if($mac == $_SESSION['bunny']){$class="selected";}else{$class="";}
+					$menu .= "<li class=\"$class".(isset($online[$mac]) ? ' online' : '').'"><span><a href="bunny.php?b='.$mac.'" alt="'.$mac.'" title="'.$mac.'">'.($bunny != "Bunny" ? $bunny : $mac).'</a></span></li>';
+				}
+			}
+			$menu or $menu = '<li class="none">No Bunny !</li>';			
 		}
-		return !empty($menu) ? $menu : '<li>No Bunny</li>';
+		return $menu;
 	}
+
 }
 
 // ### GLOBAL FUNCTIONS #########################################################################################

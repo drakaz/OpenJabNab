@@ -13,43 +13,59 @@
 	 <body>
 		<!-- Header ############################################################################################################################################# -->
 		<div id="wrapper">
+
 			<div id="header">
+				<div id="headerBg">
 
-				<div class="superHeader">
-					<span>Direct links:</span>
-					<a href="http://ojnwiki.psnet.fr/" title="openJabNab Wiki">openJabNab Wiki</a> |
-					<a href="http://freenabaztag.com/" title="Nabaztags directory">openJabNab directory</a>
+					<div class="superHeader">
+						<span>Direct links:</span>
+						<a href="http://ojnwiki.psnet.fr/" title="openJabNab Wiki">openJabNab Wiki</a> |
+						<a href="http://freenabaztag.com/" title="Nabaztags directory">openJabNab directory</a>
+					</div>
+
+					<div class="midHeader">
+						<h1 class="headerTitle" alt="<!!ALTTITLE!!>" title="<!!ALTTITLE!!>"><img src="/ojn_admin/images/logo.png"></h1>
+						<div class="headerSubTitle"><!!SUBTITLE!!></div>
+						<div class="headerLinks"></div>
+					</div>
+
+					<div class="subHeader">
+						<span class="doNotDisplay">Navigation:</span>
+							<!!MENU!!>
+					</div>
+
 				</div>
+			</div>
 
-				<div class="midHeader">
-					<h1 class="headerTitle" alt="<!!ALTTITLE!!>" title="<!!ALTTITLE!!>"><img src="/ojn_admin/images/logo.png"></h1>
-					<div class="headerSubTitle"><!!SUBTITLE!!></div>
-					<div class="headerLinks">
+			<!-- MAIN:  Liquid Layout ################################################################################################################################ -->
+			<!--  http://matthewjamestaylor.com/blog/ultimate-2-column-left-menu-pixels.htm -->
+			
+			<div class="colmask leftmenu" id="main">
+			    <div class="colright">
+			        <div class="col1wrap">
+			            <div class="col1">
+							<!-- Content ############################################################################################################################# -->
+							<div id="content">
+								<!!CONTENT!!>
+							</div>
+            			</div>
+        			</div>
+        			<div class="col2">
+						<!-- SIDE ############################################################################################################################# -->
+						<ul id="sidebar">
+							<!!BUNNIES!!>
+						</ul>
 					</div>
 				</div>
-
-				<div class="subHeader">
-					<span class="doNotDisplay">Navigation:</span>
-						<!!MENU!!>
-				</div>
-
 			</div>
 
-			<!-- SideBar ############################################################################################################################################# -->
-			<ul id="side-bar">
-				<!!BUNNIES!!>
-			</ul>
-
-			<!-- Main ############################################################################################################################################# -->
-			<div id="main-copy">
-				<!!CONTENT!!>
-				<br clear="both" />
-			</div>
 
 			<!-- Footer ############################################################################################################################################# -->
 			<div id="footer">
 				<span class="doNotPrint">
-					<strong>Bunnies &raquo;</strong> <!!LAPINS!!> &bull; <strong>Ztamps &raquo;</strong> <!!ZTAMPS!!> &bull; <strong>Plugins &raquo;</strong> <!!PLUGINS!!>
+					<span>Bunnies: <strong><!!LAPINS!!></strong></span>
+					<span>Ztamps: <strong><!!ZTAMPS!!></strong></span>
+					<span>Plugins: <strong><!!PLUGINS!!></strong></span>
 				</span>
 			</div>
 		</div>
