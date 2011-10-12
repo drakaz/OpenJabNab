@@ -24,10 +24,8 @@ if(isset($_GET['z']) && empty($_GET['z'])) {
 	$_SESSION['ztamp_name'] = $_GET['ztamp_name'];
 	header('Location: ztamp.php');
 }
-
 if(empty($_SESSION['ztamp'])) {
 ?>
-<div id="pageZtamp" class="choices">	
 <h1>Choix du ztamp &agrave; configurer</h1>
 <ul>
 <?php
@@ -35,7 +33,7 @@ if(empty($_SESSION['ztamp'])) {
     if(!empty($ztamps))
 	foreach($ztamps as $ztamp => $nom)	{
 ?>
-	<li><b><?php echo $nom; ?></b> (<?php echo $ztamp; ?>) <a href="ztamp.php?z=<?php echo $ztamp; ?>" class="button">Choisir ce Ztamp</a></li>
+	<li><?php echo $nom; ?> (<?php echo $ztamp; ?>) <a href="ztamp.php?z=<?php echo $ztamp; ?>">>></a></li>
 <?php
 	}
 ?>
@@ -43,46 +41,37 @@ if(empty($_SESSION['ztamp'])) {
 <?php
 	$bunnies = $ojnAPI->getListOfBunnies(false);
     if(!empty($bunnies))
-		foreach($bunnies as $mac => $nom)	{
-			$lastZ = $ojnAPI->getApiString("plugin/rfid/getLastTagForBunny?sn=".$mac."&".$ojnAPI->getToken());
-			if(!empty($lastZ['value'])) {
+	foreach($bunnies as $mac => $nom)	{
+		$lastZ = $ojnAPI->getApiString("plugin/rfid/getLastTagForBunny?sn=".$mac."&".$ojnAPI->getToken());
+		if(!empty($lastZ['value'])) {
 ?>
-<div class="lastZtamp">
-	Dernier Ztamp utilis&eacute;  par <b><?php echo $nom; ?></b> (<?php echo $mac; ?>): <b><?php echo (!empty($ztamps) && isset($ztamps[$lastZ['value']])) ? $ztamps[$lastZ['value']]: ''; ?></b> (<?php echo $lastZ['value']; ?>)
-</div>
+Dernier Ztamp utilis&eacute;  par <?php echo $nom; ?> (<?php echo $mac; ?>): <?php echo (!empty($ztamps) && isset($ztamps[$lastZ['value']])) ? $ztamps[$lastZ['value']]: ''; ?> (<?php echo $lastZ['value']; ?>)<br />
 <?php
-		}
-	}
-} 
-else {
+}
+}
+} else {
 ?>
-<div id="pageZtamp">	
 <h1 id="ztamp">Configuration du ztamp '<?php echo !empty($_SESSION['ztamp_name']) ? $_SESSION['ztamp_name'] : $_SESSION['ztamp']; ?>'</h1>
 <h2>Le ztamp</h2>
-
+<form>
 <fieldset>
-	<legend>Configuration</legend>
-	<form>
+<legend>Configuration</legend>
 <?php
 $plugins = $ojnAPI->getListOfPlugins(false);
 $ztampPlugins = $ojnAPI->getListOfZtampEnabledPlugins(false);
 $actifs = $ojnAPI->ztampListOfPlugins($_SESSION['ztamp'],false);
 ?>
-	<span class="fieldName">Nom</span><input type="text" name="ztamp_name" value="<?php echo $_SESSION['ztamp_name']; ?>" size="35"> <input type="submit" value="Enregistrer">
-	</form>
+Nom : <input type="text" name="ztamp_name" value="<?php echo $_SESSION['ztamp_name']; ?>"> <input type="submit" value="Enregistrer">
+</form>
 </fieldset>
-
 <?php if($Infos['isAdmin']): ?>
-
 <fieldset>
-	<legend>Debug features</legend>
-	<form method="get">
-		<input name="resetown" type="submit" value="Liberer le ztamp de ce compte">
-	</form>
+<form method="get">
+<legend>Debug features</legend>
+<input name="resetown" type="submit" value="Liberer le ztamp de ce compte">
 </fieldset>
-
+</form>
 <?php endif; ?>
-
 <h2>Plugins</h2>
 <?php
 if(isset($_SESSION['message']) && empty($_GET)) {
@@ -98,7 +87,8 @@ if(isset($_SESSION['message']) && empty($_GET)) {
 	echo "</div>";
 }
 ?>
-	<table class="tablePlugins" cellspacing=0>
+<center>
+<table style="width: 80%">
 	<tr>
 		<th>Plugin</th>
 		<th colspan="2">Actions</th>
@@ -109,14 +99,11 @@ if(isset($_SESSION['message']) && empty($_GET)) {
 ?>
 	<tr<?php echo $i++ % 2 ? " class='l2'" : "" ?>>
 		<td><?php echo $plugins[$plugin]; ?></td>
-		<td <?php echo in_array($plugin, $actifs) ? 'width="20%" class="remove"' : 'colspan="2" class="add"'; ?>><a href='ztamp.php?stat=<?php echo in_array($plugin, $actifs) ? "unregister" : "register"; ?>&plug=<?php echo $plugin; ?>'><?php echo in_array($plugin, $actifs) ? "D&eacute;sa" : "A"; ?>ctiver le plugin</a></td>
-		<?php if(in_array($plugin, $actifs)): ?><td width="20%" class="config"><?php echo in_array($plugin, $actifs)?"<a href='ztamp_plugin.php?p=$plugin'>Configurer / Utiliser</a>":""?></td><?php endif; ?>
+		<td <?php echo in_array($plugin, $actifs) ? 'width="20%"' : 'colspan="2"'; ?>><a href='ztamp.php?stat=<?php echo in_array($plugin, $actifs) ? "unregister" : "register"; ?>&plug=<?php echo $plugin; ?>'><?php echo in_array($plugin, $actifs) ? "D&eacute;sa" : "A"; ?>ctiver le plugin</a></td>
+		<?php if(in_array($plugin, $actifs)): ?><td width="20%"><?php echo in_array($plugin, $actifs)?"<a href='ztamp_plugin.php?p=$plugin'>Configurer / Utiliser</a>":""?></td><?php endif; ?>
 	</tr>
 <?php } ?>
-	</table>
+</table>
 <?php }
-?>
-</div>
-<?php
 require_once "include/append.php";
 ?>
