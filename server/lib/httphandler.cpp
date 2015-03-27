@@ -1,4 +1,5 @@
 #include <QByteArray>
+#include <QMap>
 #include <memory>
 #include "apimanager.h"
 #include "bunny.h"
@@ -9,6 +10,8 @@
 #include "netdump.h"
 #include "openjabnab.h"
 #include "settings.h"
+#include "pocketSphinx.h"
+#include "context.h"
 
 HttpHandler::HttpHandler(QTcpSocket * s, bool api, bool violetapi):pluginManager(PluginManager::Instance())
 {
@@ -74,6 +77,59 @@ void HttpHandler::HandleBunnyHTTPRequest()
 		incomingHttpSocket->write(request.reply);
 		if(!uri.contains("itmode.jsp") && !uri.contains(".mp3") && !uri.contains(".chor") && !uri.contains("bc.jsp") && request.reply.size() < 256) // Don't dump too big answers
 			NetworkDump::Log("HTTP Answer", request.reply);
+
+		Disconnect(); // disconnect so the bunny doesn't send the record again
+		if (uri.startsWith("/vl/record.jsp") && PocketSphinx::enabled()) // audio record
+		{
+			QString sn = request.GetArg("sn");
+			Bunny* bunny = BunnyManager::GetBunny(sn.toAscii());
+			QString record = bunny->GetGlobalSetting("LastRecord", "").toString();
+
+			LogInfo(record);
+			Context::update();
+
+			if (Context::getAvailability()) {
+				LogInfo("available");
+
+				QString recognized = PocketSphinx::recognize(record);
+				LogInfo("Recognized : " + recognized);
+
+
+				QMap<QString, QString> plugins;
+				plugins.insert("heure", "clock");
+				plugins.insert("reconnaissance", "speakerrecognition");
+				plugins.insert("enregistrement", "speakerregistration");
+				plugins.insert("agenda", "agenda");
+
+				QMap<QString, QString>::const_iterator it;
+				for (it = plugins.begin(); it != plugins.end(); ++it)
+				{
+					if (recognized.startsWith(it.key()))
+					{
+						PluginInterface* p = PluginManager::Instance().GetPluginByName(*it);
+						LogInfo("starting plugin : " + *it);
+
+						if (p)
+							p->OnClick(bunny, PluginInterface::SingleClick);
+						else
+							LogError("PluginManager returned null for plugin : " + *it);
+
+						break;
+					}
+				}
+			}
+			else {
+				QString activePlugin(Context::getActivePlugin().c_str());
+				PluginInterface* p = PluginManager::Instance().GetPluginByName(activePlugin);
+				LogInfo("starting plugin (waiting) : " + activePlugin);
+
+				if (p)
+					p->OnClick(bunny, PluginInterface::SingleClick);
+				else
+					LogError("PluginManager returned null for plugin : " + activePlugin);
+			}
+		}
+		return;
 	}
 	Disconnect();
 }
