@@ -3,7 +3,7 @@
 #include "bunnymanager.h"
 #include "log.h"
 
-Q_EXPORT_PLUGIN2(plugin_stats, PluginStats)
+Q_PLUGIN_METADATA(IID "org.openjabnab.plugin.system.stats" FILE "stats.json");
 
 PluginStats::PluginStats():PluginInterface("stats", "stats plugin", SystemPlugin)
 {
