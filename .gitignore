@@ -2,3 +2,5 @@ Makefile
 bin/
 tmp/
 ojn_local/
+server/.ycm_extra_conf.py
+server/.ycm_extra_conf.pyc
