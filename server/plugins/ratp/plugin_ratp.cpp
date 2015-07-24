@@ -18,8 +18,7 @@
 #include "settings.h"
 #include "ttsmanager.h"
 
-
-Q_EXPORT_PLUGIN2(plugin_ratp, PluginRatp)
+Q_PLUGIN_METADATA(IID "org.openjabnab.plugin.ratp" FILE "ratp.json");
 
 PluginRatp::PluginRatp():PluginInterface("ratp", "RATP : Prochains passages")
 {
