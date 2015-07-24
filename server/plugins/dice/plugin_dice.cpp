@@ -6,7 +6,7 @@
 #include "messagepacket.h"
 #include "plugin_dice.h"
 
-Q_EXPORT_PLUGIN2(plugin_dice, PluginDice)
+Q_PLUGIN_METADATA(IID "org.openjabnab.plugin.dice" FILE "dice.json");
 
 PluginDice::PluginDice():PluginInterface("dice", "Dice roll",BunnyZtampPlugin)
 {
