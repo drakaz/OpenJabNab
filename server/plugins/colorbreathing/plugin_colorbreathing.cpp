@@ -7,7 +7,7 @@
 #include "log.h"
 #include "settings.h"
 
-Q_EXPORT_PLUGIN2(plugin_colorbreathing, PluginColorbreathing)
+Q_PLUGIN_METADATA(IID "org.openjabnab.plugin.colorbreathing" FILE "colorbreathing.json");
 
 PluginColorbreathing::PluginColorbreathing():PluginInterface("colorbreathing", "Change breathing color", BunnyPlugin)
 {
