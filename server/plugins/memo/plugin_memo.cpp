@@ -13,7 +13,7 @@
 #include "settings.h"
 #include "ttsmanager.h"
 
-Q_EXPORT_PLUGIN2(plugin_memo, PluginMemo)
+Q_PLUGIN_METADATA(IID "org.openjabnab.plugin.memo" FILE "memo.json");
 
 PluginMemo::PluginMemo():PluginInterface("memo", "Memo", BunnyPlugin)
 {
