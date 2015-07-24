@@ -13,7 +13,6 @@ public:
 	enum RequestType { INVALID, GET, POST, POSTRAW };
 
 	HTTPRequest(QByteArray const&);
-	QByteArray ForwardTo(QString const& server);
 	QString const& GetURI() const;
 	QByteArray const& GetRawURI() const;
 	QString GetArg(QString const& s) const;

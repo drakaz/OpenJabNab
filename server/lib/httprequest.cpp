@@ -1,9 +1,8 @@
 #include <QEventLoop>
-#include <QHttp>
-#include <QHttpRequestHeader>
+#include <QNetworkAccessManager>
 #include <QObject>
 #include <QStringList>
-#include <QUrl>
+#include <QUrlQuery>
 #include "httprequest.h"
 #include "log.h"
 
@@ -55,61 +54,14 @@ HTTPRequest::HTTPRequest(QByteArray const& data):type(INVALID)
 			return;
 	}
 	// Parse URI
-	QUrl url(rawUri);
-	uri = url.path();
-	if(url.hasQuery())
+    QUrlQuery url(rawUri);
+    if(!url.isEmpty())
 	{
-		QList<QPair<QString, QString> > items = url.queryItems();
+        QList<QPair<QString, QString> > items = url.queryItems();
 		typedef QPair<QString, QString> queryItemDef;
 		foreach(queryItemDef item, items)
-			getData[QUrl::fromPercentEncoding(item.first.toAscii())] = QUrl::fromPercentEncoding(item.second.toAscii());
+            getData[QUrl::fromPercentEncoding(item.first.toLatin1())] = QUrl::fromPercentEncoding(item.second.toLatin1());
 	}
-}
-
-QByteArray HTTPRequest::ForwardTo(QString const& server)
-{
-	QByteArray answer;
-	QEventLoop loop;
-	QHttp http(server);
-	QObject::connect(&http, SIGNAL(done(bool)), &loop, SLOT(quit()));
-
-	QHttpRequestHeader header;
-	{
-		QStringList lst;
-		QString str = rawHeaders;
-		lst = str.split(QLatin1String("\r\n"));
-		lst.removeAll(QString()); // No empties
-		if (!lst.isEmpty())
-
-		for(QStringList::Iterator it = lst.begin(); it != lst.end(); ++it)
-		{
-			int i = it->indexOf(QLatin1Char(':'));
-			if (i != -1)
-				header.addValue(it->left(i).trimmed(), it->mid(i + 1).trimmed());
-		}
-	}
-	header.removeValue("Connection");
-	header.setValue("Host", server);
-	if (type == GET)
-	{
-		header.setRequest("GET", rawUri);
-		http.request(header);
-	}
-	else
-	{
-		header.setRequest("POST", rawUri);
-		http.request(header, rawPostData);
-	}
-	loop.exec();
-	if(http.error() != QHttp::NoError)
-	{
-		LogError(http.errorString());
-		http.close();
-		return QByteArray();
-	}
-	answer = http.readAll();
-	http.close();
-	return answer;
 }
 
 QString HTTPRequest::toString() const
