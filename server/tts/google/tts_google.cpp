@@ -9,8 +9,6 @@
 #include "tts_google.h"
 #include "log.h"
 
-Q_PLUGIN_METADATA(IID "org.openjabnab.plugin.tts.google" FILE "tts_google.json");
-
 TTSGoogle::TTSGoogle():TTSInterface("google", "Google")
 {
 	voiceList.insert("fr", "fr");

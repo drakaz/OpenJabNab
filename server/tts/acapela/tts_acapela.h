@@ -10,7 +10,8 @@ class TTSAcapela : public TTSInterface
 {
 	Q_OBJECT
 	Q_INTERFACES(TTSInterface)
-	
+	Q_PLUGIN_METADATA(IID "org.openjabnab.plugin.tts.acapela" FILE "tts_acapela.json");
+
 public:
 	TTSAcapela();
 	virtual ~TTSAcapela();

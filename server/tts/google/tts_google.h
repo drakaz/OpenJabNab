@@ -10,7 +10,8 @@ class TTSGoogle : public TTSInterface
 {
 	Q_OBJECT
 	Q_INTERFACES(TTSInterface)
-	
+	Q_PLUGIN_METADATA(IID "org.openjabnab.plugin.tts.google" FILE "tts_google.json");
+
 public:
 	TTSGoogle();
 	virtual ~TTSGoogle();

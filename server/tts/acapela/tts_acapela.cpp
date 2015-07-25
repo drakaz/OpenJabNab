@@ -10,8 +10,6 @@
 #include <QObject>
 #include <QUrlQuery>
 
-Q_PLUGIN_METADATA(IID "org.openjabnab.plugin.tts.acapela" FILE "tts_acapela.json");
-
 TTSAcapela::TTSAcapela():TTSInterface("acapela", "Acapela")
 {
 	// Arabic
