@@ -9,8 +9,6 @@
 #include "settings.h"
 #include "sleeppacket.h"
 
-Q_PLUGIN_METADATA(IID "org.openjabnab.plugin.sleep" FILE "sleep.json");
-
 PluginSleep::PluginSleep():PluginInterface("sleep", "Advanced sleep and wake up",BunnyPlugin) {}
 
 PluginSleep::~PluginSleep()

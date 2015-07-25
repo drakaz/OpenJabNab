@@ -13,6 +13,7 @@ class PluginWeather : public PluginInterface
 	friend class PluginWeather_Worker;
 	Q_OBJECT
 	Q_INTERFACES(PluginInterface)
+	Q_PLUGIN_METADATA(IID "org.openjabnab.plugin.weather" FILE "weather.json");
 
 private slots:
 	void analyseXml(QNetworkReply*);

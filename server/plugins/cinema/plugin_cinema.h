@@ -11,7 +11,8 @@ class PluginCinema : public PluginInterface
 	friend class PluginCinema_Worker;
 	Q_OBJECT
 	Q_INTERFACES(PluginInterface)
-	
+	Q_PLUGIN_METADATA(IID "org.openjabnab.plugin.cinema" FILE "cinema.json");
+
 private slots:
 	void analyseXml();
 	void analyseDone(bool, Bunny*, QByteArray);

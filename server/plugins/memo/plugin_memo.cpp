@@ -13,8 +13,6 @@
 #include "settings.h"
 #include "ttsmanager.h"
 
-Q_PLUGIN_METADATA(IID "org.openjabnab.plugin.memo" FILE "memo.json");
-
 PluginMemo::PluginMemo():PluginInterface("memo", "Memo", BunnyPlugin)
 {
 	std::auto_ptr<QDir> dir(GetLocalHTTPFolder());

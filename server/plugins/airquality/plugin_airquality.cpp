@@ -17,8 +17,6 @@
 #include "settings.h"
 #include "ttsmanager.h"
 
-Q_PLUGIN_METADATA(IID "org.openjabnab.plugin.airquality" FILE "airquality.json");
-
 PluginAirquality::PluginAirquality():PluginInterface("airquality", "Air quality plugin", BunnyZtampPlugin)
 {
 	std::auto_ptr<QDir> dir(GetLocalHTTPFolder());

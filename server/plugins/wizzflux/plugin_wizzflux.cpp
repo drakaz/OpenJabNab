@@ -12,8 +12,6 @@
 #include "bunnymanager.h"
 #include "messagepacket.h"
 
-Q_PLUGIN_METADATA(IID "org.openjabnab.plugin.wizzflux" FILE "wizzflux.json");
-
 PluginWizzflux::PluginWizzflux():PluginInterface("wizzflux", "Various Flux by Wizz.cc", BunnyZtampPlugin) {
 	Flist = GetSettings("ListFlux", QStringList()).toStringList();
 	if(Flist.count() == 0)

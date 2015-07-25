@@ -13,6 +13,7 @@ class PluginRatp : public PluginInterface
 {
 	Q_OBJECT
 	Q_INTERFACES(PluginInterface)
+	Q_PLUGIN_METADATA(IID "org.openjabnab.plugin.ratp" FILE "ratp.json");
 
 private slots:
 	void analyseXml(QNetworkReply* networkReply);

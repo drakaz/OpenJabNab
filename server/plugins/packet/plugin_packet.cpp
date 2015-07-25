@@ -2,8 +2,6 @@
 #include "bunny.h"
 #include "messagepacket.h"
 
-Q_PLUGIN_METADATA(IID "org.openjabnab.plugin.packet" FILE "packet.json");
-
 PluginPacket::PluginPacket():PluginInterface("packet", "Send raw packets to bunny",BunnyPlugin) {}
 
 void PluginPacket::InitApiCalls()

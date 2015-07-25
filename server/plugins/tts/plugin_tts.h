@@ -8,6 +8,7 @@ class PluginTTS : public PluginInterface
 {
 	Q_OBJECT
 	Q_INTERFACES(PluginInterface)
+	Q_PLUGIN_METADATA(IID "org.openjabnab.plugin.tts" FILE "tts.json");
 
 public:
 	PluginTTS();

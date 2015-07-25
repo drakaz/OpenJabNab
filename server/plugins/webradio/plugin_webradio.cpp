@@ -7,8 +7,6 @@
 #include "bunnymanager.h"
 #include "messagepacket.h"
 
-Q_PLUGIN_METADATA(IID "org.openjabnab.plugin.webradio" FILE "webradio.json");
-
 PluginWebradio::PluginWebradio():PluginInterface("webradio", "WebRadio", BunnyZtampPlugin)
 {
 	presets.clear();

@@ -18,8 +18,6 @@
 #include "settings.h"
 #include "ttsmanager.h"
 
-Q_PLUGIN_METADATA(IID "org.openjabnab.plugin.weather" FILE "weather.json");
-
 PluginWeather::PluginWeather():PluginInterface("weather", "Weather", BunnyZtampPlugin)
 {
 	std::auto_ptr<QDir> dir(GetLocalHTTPFolder());

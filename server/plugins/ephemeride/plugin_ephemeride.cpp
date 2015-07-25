@@ -18,8 +18,6 @@
 #include "settings.h"
 #include "ttsmanager.h"
 
-Q_PLUGIN_METADATA(IID "org.openjabnab.plugin.ephemeride" FILE "ephemeride.json");
-
 PluginEphemeride::PluginEphemeride():PluginInterface("ephemeride", "Ephemeride",BunnyPlugin) {}
 
 PluginEphemeride::~PluginEphemeride()

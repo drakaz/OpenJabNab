@@ -11,7 +11,8 @@ class PluginEphemeride : public PluginInterface
 	friend class PluginEphemeride_Worker;
 	Q_OBJECT
 	Q_INTERFACES(PluginInterface)
-	
+	Q_PLUGIN_METADATA(IID "org.openjabnab.plugin.ephemeride" FILE "ephemeride.json");
+
 private slots:
 	void analyseXml();
 	void analyseDone(bool, Bunny*, QByteArray);

@@ -6,8 +6,6 @@
 #include "messagepacket.h"
 #include "plugin_dice.h"
 
-Q_PLUGIN_METADATA(IID "org.openjabnab.plugin.dice" FILE "dice.json");
-
 PluginDice::PluginDice():PluginInterface("dice", "Dice roll",BunnyZtampPlugin)
 {
 	// Initialize the randomizer

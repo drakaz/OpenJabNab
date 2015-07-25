@@ -12,6 +12,7 @@ class PluginAirquality : public PluginInterface
 {
 	Q_OBJECT
 	Q_INTERFACES(PluginInterface)
+	Q_PLUGIN_METADATA(IID "org.openjabnab.plugin.airquality" FILE "airquality.json");
 
 private slots:
 	void analyseHtml(QNetworkReply*);

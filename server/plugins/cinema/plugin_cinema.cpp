@@ -18,8 +18,6 @@
 #include "settings.h"
 #include "ttsmanager.h"
 
-Q_PLUGIN_METADATA(IID "org.openjabnab.plugin.cinema" FILE "cinema.json");
-
 PluginCinema::PluginCinema():PluginInterface("cinema", "Sorties cinema de la semaine",BunnyZtampPlugin) { }
 
 PluginCinema::~PluginCinema()

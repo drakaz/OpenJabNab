@@ -10,8 +10,6 @@
 #include "account.h"
 #include "plugin_annuaire.h"
 
-Q_PLUGIN_METADATA(IID "org.openjabnab.plugin.annuaire" FILE "annuaire.json");
-
 PluginAnnuaire::PluginAnnuaire():PluginInterface("annuaire", "Register the bunny on the central directory", SystemPlugin)
 {
 }

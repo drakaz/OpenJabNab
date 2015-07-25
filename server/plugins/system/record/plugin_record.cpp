@@ -7,8 +7,6 @@
 #include "log.h"
 #include "settings.h"
 
-Q_PLUGIN_METADATA(IID "org.openjabnab.plugin.record" FILE "record.json");
-
 PluginRecord::PluginRecord():PluginInterface("record", "Manage Record requests", SystemPlugin)
 {
 	std::auto_ptr<QDir> dir(GetLocalHTTPFolder());

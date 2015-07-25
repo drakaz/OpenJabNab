@@ -10,6 +10,7 @@ class PluginAuth : public PluginAuthInterface
 {
 	Q_OBJECT
 	Q_INTERFACES(PluginInterface)
+	Q_PLUGIN_METADATA(IID "org.openjabnab.plugin.auth" FILE "auth.json");
 
 public:
 	PluginAuth();

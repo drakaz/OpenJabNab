@@ -4,8 +4,6 @@
 #include "cron.h"
 #include "messagepacket.h"
 
-Q_PLUGIN_METADATA(IID "org.openjabnab.plugin.surprise" FILE "surprise.json");
-
 // +/- 20% - 30min => rand(24,36)
 #define RANDOMIZEDRATIO 20
 

@@ -7,6 +7,7 @@ class PluginTaichi : public PluginInterface
 {
 	Q_OBJECT
 	Q_INTERFACES(PluginInterface)
+	Q_PLUGIN_METADATA(IID "org.openjabnab.plugin.taichi" FILE "taichi.json");
 
 public:
 	PluginTaichi();

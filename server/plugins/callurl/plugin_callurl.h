@@ -10,6 +10,7 @@ class PluginCallURL : public PluginInterface
 {
 	Q_OBJECT
 	Q_INTERFACES(PluginInterface)
+	Q_PLUGIN_METADATA(IID "org.openjabnab.plugin.callurl" FILE "callurl.json");
 
 public:
 	PluginCallURL();

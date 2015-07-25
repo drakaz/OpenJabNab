@@ -7,6 +7,7 @@ class PluginTest : public PluginInterface
 {
 	Q_OBJECT
 	Q_INTERFACES(PluginInterface)
+	Q_PLUGIN_METADATA(IID "org.openjabnab.plugin.test" FILE "test.json");
 
 public:
 	PluginTest();

@@ -2,8 +2,6 @@
 #include "ambientpacket.h"
 #include "bunny.h"
 
-Q_PLUGIN_METADATA(IID "org.openjabnab.plugin.taichi" FILE "taichi.json");
-
 PluginTaichi::PluginTaichi():PluginInterface("taichi", "Manage Bunny's Taichi",BunnyPlugin)
 {
 }

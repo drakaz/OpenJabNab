@@ -15,8 +15,6 @@
 #include "settings.h"
 #include "ttsmanager.h"
 
-Q_PLUGIN_METADATA(IID "org.openjabnab.plugin.music" FILE "music.json");
-
 PluginMusic::PluginMusic():PluginInterface("music", "Music", BunnyZtampPlugin) {}
 
 bool PluginMusic::Init()

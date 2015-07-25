@@ -9,8 +9,6 @@
 #include "settings.h"
 #include "ttsmanager.h"
 
-Q_PLUGIN_METADATA(IID "org.openjabnab.plugin.tts" FILE "tts.json");
-
 PluginTTS::PluginTTS():PluginInterface("tts", "TTS Plugin, Send Text to Bunny",BunnyZtampPlugin)
 {
 }

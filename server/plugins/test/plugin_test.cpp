@@ -5,8 +5,6 @@
 #include "httprequest.h"
 #include "messagepacket.h"
 
-Q_PLUGIN_METADATA(IID "org.openjabnab.plugin.test" FILE "test.json");
-
 PluginTest::PluginTest():PluginInterface("test", "Test choregraphy generation",BunnyPlugin)
 {
 	angle = 0;

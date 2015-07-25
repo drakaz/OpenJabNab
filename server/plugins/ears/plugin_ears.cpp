@@ -4,8 +4,6 @@
 #include "ambientpacket.h"
 #include "messagepacket.h"
 
-Q_PLUGIN_METADATA(IID "org.openjabnab.plugin.ears" FILE "ears.json");
-
 PluginEars::PluginEars():PluginInterface("ears", "Ears Pairing with another Bunny",BunnyPlugin) { }
 
 PluginEars::~PluginEars() {}

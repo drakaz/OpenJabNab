@@ -11,7 +11,8 @@ class PluginTV : public PluginInterface
 	friend class PluginTV_Worker;
 	Q_OBJECT
 	Q_INTERFACES(PluginInterface)
-	
+	Q_PLUGIN_METADATA(IID "org.openjabnab.plugin.tv" FILE "tv.json");
+
 private slots:
 	void analyseXml();
 	void analyseDone(bool, Bunny*, QByteArray);

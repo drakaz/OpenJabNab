@@ -6,10 +6,6 @@
 #include "log.h"
 #include "settings.h"
 
-
-
-Q_PLUGIN_METADATA(IID "org.openjabnab.plugin.locate" FILE "locate.json");
-
 PluginLocate::PluginLocate():PluginInterface("locate", "Manage Locate requests", RequiredPlugin) {}
 
 bool PluginLocate::HttpRequestHandle(HTTPRequest & request)

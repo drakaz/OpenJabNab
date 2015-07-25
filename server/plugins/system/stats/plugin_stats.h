@@ -7,6 +7,7 @@ class PluginStats : public PluginInterface
 {
 	Q_OBJECT
 	Q_INTERFACES(PluginInterface)
+	Q_PLUGIN_METADATA(IID "org.openjabnab.plugin.system.stats" FILE "stats.json");
 
 public:
 	PluginStats();

@@ -8,6 +8,7 @@ class PluginRecord : public PluginInterface
 {
 	Q_OBJECT
 	Q_INTERFACES(PluginInterface)
+	Q_PLUGIN_METADATA(IID "org.openjabnab.plugin.record" FILE "record.json");
 
 public:
 	PluginRecord();

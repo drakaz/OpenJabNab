@@ -8,6 +8,7 @@ class PluginRFID : public PluginInterface
 {
 	Q_OBJECT
 	Q_INTERFACES(PluginInterface)
+	Q_PLUGIN_METADATA(IID "org.openjabnab.plugin.rfid" FILE "rfid.json");
 
 public:
 	PluginRFID();

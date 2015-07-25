@@ -11,8 +11,6 @@
 #include "settings.h"
 #include "plugininterface.h"
 
-Q_PLUGIN_METADATA(IID "org.openjabnab.plugin.callurl" FILE "callurl.json");
-
 PluginCallURL::PluginCallURL():PluginInterface("callurl", "Plugin to call an URL")
 {
 }

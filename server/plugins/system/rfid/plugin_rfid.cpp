@@ -10,8 +10,6 @@
 #include "log.h"
 #include "settings.h"
 
-Q_PLUGIN_METADATA(IID "org.openjabnab.plugin.rfid" FILE "rfid.json");
-
 PluginRFID::PluginRFID():PluginInterface("rfid", "Manage RFID requests", SystemPlugin) {}
 
 bool PluginRFID::HttpRequestHandle(HTTPRequest & request)

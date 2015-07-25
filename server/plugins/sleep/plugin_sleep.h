@@ -13,6 +13,7 @@ class PluginSleep : public PluginInterface
 {
 	Q_OBJECT
 	Q_INTERFACES(PluginInterface)
+	Q_PLUGIN_METADATA(IID "org.openjabnab.plugin.sleep" FILE "sleep.json");
 
 public slots:
 	void OnCronSleep(Bunny *, QVariant);

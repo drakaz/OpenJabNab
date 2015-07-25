@@ -9,8 +9,6 @@
 #include "settings.h"
 #include "xmpphandler.h"
 
-Q_PLUGIN_METADATA(IID "org.openjabnab.plugin.auth" FILE "auth.json");
-
 PluginAuth::PluginAuth():PluginAuthInterface("auth", "Manage Authentication process")
 {
 }

@@ -18,8 +18,6 @@
 #include "settings.h"
 #include "ttsmanager.h"
 
-Q_PLUGIN_METADATA(IID "org.openjabnab.plugin.tv" FILE "tv.json");
-
 PluginTV::PluginTV():PluginInterface("tv", "Programme TV",BunnyZtampPlugin) {}
 
 PluginTV::~PluginTV()

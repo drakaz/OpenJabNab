@@ -7,8 +7,6 @@
 #include "plugin_clock.h"
 #include "ttsmanager.h"
 
-Q_PLUGIN_METADATA(IID "org.openjabnab.plugin.clock" FILE "clock.json");
-
 PluginClock::PluginClock():PluginInterface("clock", "Clock",BunnyPlugin)
 {
 	Cron::Register(this, 60, 0, 0, NULL);
