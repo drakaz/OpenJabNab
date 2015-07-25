@@ -5,6 +5,7 @@
 TEMPLATE = app
 CONFIG += qt console
 CONFIG += debug_and_release
+CONFIG-=app_bundle
 QT += network
 QT -= gui
 TARGET = openjabnab
