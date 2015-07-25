@@ -1,7 +1,6 @@
 #ifndef _PLUGINTV_H_
 #define _PLUGINTV_H_
 
-#include <QHttp>
 #include <QMultiMap>
 #include <QTextStream>
 #include <QThread>

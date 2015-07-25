@@ -1,10 +1,12 @@
 #include <QDateTime>
 #include <QCryptographicHash>
 #include <QXmlStreamReader>
-#include <QHttp>
 #include <QMapIterator>
 #include <QRegExp>
 #include <QUrl>
+#include <QNetworkAccessManager>
+#include <QNetworkRequest>
+#include <QNetworkReply>
 #include <memory>
 #include "bunny.h"
 #include "bunnymanager.h"
@@ -16,7 +18,7 @@
 #include "settings.h"
 #include "ttsmanager.h"
 
-Q_EXPORT_PLUGIN2(plugin_tv, PluginTV)
+Q_PLUGIN_METADATA(IID "org.openjabnab.plugin.tv" FILE "tv.json");
 
 PluginTV::PluginTV():PluginInterface("tv", "Programme TV",BunnyZtampPlugin) {}
 
@@ -52,16 +54,22 @@ bool PluginTV::OnClick(Bunny * b, PluginInterface::ClickType type)
 
 void PluginTV::getTVPage(Bunny * b)
 {
-	QHttp* http = new QHttp(this);
-	http->setProperty("BunnyID", b->GetID());
-	connect(http, SIGNAL(done(bool)), this, SLOT(analyseXml()));
-	http->setHost("programme-tv.orange.fr");
-	http->get("/rss/fluxRssProgrammeSoiree.xml");
+	QEventLoop waitLoop;
+    QNetworkAccessManager *connection = new QNetworkAccessManager();
+    QUrl url = QUrl("programme-tv.orange.fr/rss/fluxRssProgrammeSoiree.xml");
+    QNetworkRequest requete(url);
+    QNetworkReply *http = NULL;
+
+    connect(http, SIGNAL(done(bool)), this, SLOT(analyseXml()));
+
+    http->setProperty("BunnyID", b->GetID());
+
+    http = connection->get(requete);
 }
 
 void PluginTV::analyseXml()
 {
-	std::auto_ptr<QHttp> http(qobject_cast<QHttp *>(sender()));
+	std::auto_ptr<QNetworkReply> http(qobject_cast<QNetworkReply *>(sender()));
 	Bunny * bunny = BunnyManager::GetBunny(this, http->property("BunnyID").toByteArray());
 	if(!bunny)
 		return;
