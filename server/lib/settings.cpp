@@ -13,6 +13,8 @@ GlobalSettings::GlobalSettings()
 		settings = new QSettings(fileName, QSettings::IniFormat);
 	else
 	{
+		std::cerr << "Searching for configuration in :" << std::endl;
+		std::cerr << QCoreApplication::applicationDirPath().toLocal8Bit().data() << std::endl;
 		std::cerr << "Error, openjabnab.ini not found !" << std::endl;
 		exit(-1);
 	}

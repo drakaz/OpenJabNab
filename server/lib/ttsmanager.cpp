@@ -19,6 +19,7 @@ TTSManager::TTSManager()
 	if (!ttsDir.cd("tts"))
 	{
 		LogError("Unable to open tts directory !\n");
+		LogError(QCoreApplication::applicationDirPath().toLocal8Bit().data());
 		exit(-1);
 	}
 }
