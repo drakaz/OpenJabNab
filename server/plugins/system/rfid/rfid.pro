@@ -25,3 +25,6 @@ unix {
 # Input
 HEADERS += plugin_rfid.h
 SOURCES += plugin_rfid.cpp
+
+DISTFILES += \
+    rfid.json

@@ -25,3 +25,6 @@ unix {
 # Input
 HEADERS += plugin_locate.h
 SOURCES += plugin_locate.cpp
+
+DISTFILES += \
+    org.openjabnab.plugin.locate.json

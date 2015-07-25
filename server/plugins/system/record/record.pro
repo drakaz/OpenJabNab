@@ -25,3 +25,6 @@ unix {
 # Input
 HEADERS += plugin_record.h
 SOURCES += plugin_record.cpp
+
+DISTFILES += \
+    record.json

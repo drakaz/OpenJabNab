@@ -25,3 +25,6 @@ unix {
 # Input
 HEADERS += plugin_msgall.h
 SOURCES += plugin_msgall.cpp
+
+DISTFILES += \
+    msgall.json
