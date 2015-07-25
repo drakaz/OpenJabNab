@@ -2,10 +2,14 @@
 #include <QUrl>
 #include <QCryptographicHash>
 #include <QMapIterator>
+#include <QNetworkAccessManager>
+#include <QNetworkRequest>
+#include <QNetworkReply>
+#include <QUrlQuery>
 #include "tts_google.h"
 #include "log.h"
 
-Q_EXPORT_PLUGIN2(tts_google, TTSGoogle)
+Q_PLUGIN_METADATA(IID "org.openjabnab.plugin.tts.google" FILE "tts_google.json");
 
 TTSGoogle::TTSGoogle():TTSInterface("google", "Google")
 {
@@ -35,26 +39,32 @@ QByteArray TTSGoogle::CreateNewSound(QString text, QString voice, bool forceOver
 	}
 	
 	// Compute fileName
-	QString fileName = QCryptographicHash::hash(text.toAscii(), QCryptographicHash::Md5).toHex().append(".mp3");
+	QString fileName = QCryptographicHash::hash(text.toLatin1(), QCryptographicHash::Md5).toHex().append(".mp3");
 	QString filePath = outputFolder.absoluteFilePath(fileName);
 
 	if(!forceOverwrite && QFile::exists(filePath))
-		return ttsHTTPUrl.arg(voice, fileName).toAscii();
+		return ttsHTTPUrl.arg(voice, fileName).toLatin1();
 
 	// Fetch MP3
-	QHttp http("translate.google.com");
-	QObject::connect(&http, SIGNAL(done(bool)), &loop, SLOT(quit()));
+	QNetworkAccessManager *connection = new QNetworkAccessManager;
+	QUrl qurl = QUrl("translate.google.com/translate_tts");
+    QNetworkRequest requete(qurl);
+    QNetworkReply *http = NULL;
 
-	QByteArray ContentData;
-	ContentData += "ie=UTF-8&q=" + QUrl::toPercentEncoding(text) + "&tl=" + voice;
+	QObject::connect(http, SIGNAL(done(bool)), &loop, SLOT(quit()));
 
-	QHttpRequestHeader Header;
-	Header.addValue("Host", "translate.google.com");
+	QUrlQuery query;
+	query.addQueryItem("ie", "UTF-8");
+	query.addQueryItem("q", QUrl::toPercentEncoding(text));
+	query.addQueryItem("tl", voice);
 
-	Header.setContentLength(ContentData.length());
-	Header.setRequest("POST", "/translate_tts", 1, 1);
+	QUrl post_data;
+	post_data.setQuery(query);
 
-	http.request(Header, ContentData);
+	requete.setRawHeader("Host", "translate.google.com");
+
+	http = connection->post(requete, post_data.toEncoded());
+
 	loop.exec();
 
 	QFile file(filePath);
@@ -63,8 +73,8 @@ QByteArray TTSGoogle::CreateNewSound(QString text, QString voice, bool forceOver
 		LogError("Cannot open sound file for writing");
 		return QByteArray();
 	}
-	file.write(http.readAll());
+	file.write(http->readAll());
 	file.close();
-	return ttsHTTPUrl.arg(voice, fileName).toAscii();
+	return ttsHTTPUrl.arg(voice, fileName).toLatin1();
 }
 

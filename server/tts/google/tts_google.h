@@ -1,7 +1,6 @@
 #ifndef _TTSGOOGLE_H_
 #define _TTSGOOGLE_H_
 
-#include <QHttp>
 #include <QMultiMap>
 #include <QTextStream>
 #include <QThread>
