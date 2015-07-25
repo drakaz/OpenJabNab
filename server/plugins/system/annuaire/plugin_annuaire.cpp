@@ -39,7 +39,7 @@ void PluginAnnuaire::OnBunnyConnect(Bunny * b)
 
 	    QNetworkRequest requete(qurl);
 	    QNetworkReply *http = NULL;
-
+	    Q_UNUSED(http);
 	    http = connection->get(requete);    
 	}
 }
