@@ -6,6 +6,7 @@
 #include <QNetworkReply>
 #include <QMapIterator>
 #include <QRegExp>
+#include <QUrlQuery>
 #include <memory>
 #include "bunny.h"
 #include "bunnymanager.h"
@@ -17,7 +18,7 @@
 #include "settings.h"
 #include "ttsmanager.h"
 
-Q_EXPORT_PLUGIN2(plugin_weather, PluginWeather)
+Q_PLUGIN_METADATA(IID "org.openjabnab.plugin.weather" FILE "weather.json");
 
 PluginWeather::PluginWeather():PluginInterface("weather", "Weather", BunnyZtampPlugin)
 {
@@ -65,14 +66,23 @@ bool PluginWeather::OnClick(Bunny * b, PluginInterface::ClickType type)
 
 void PluginWeather::getWeatherPage(Bunny * b, QString ville)
 {
-	Q_UNUSED(b);
-	QUrl url("http://www.google.com/ig/api");
-	url.addEncodedQueryItem("hl", b->GetPluginSetting(GetName(), "Lang","fr").toByteArray());
-	url.addEncodedQueryItem("weather", QUrl::toPercentEncoding(ville));
-	QNetworkAccessManager *manager = new QNetworkAccessManager(this);
-	manager->setProperty("BunnyID", b->GetID());
-	connect(manager, SIGNAL(finished(QNetworkReply*)),this, SLOT(analyseXml(QNetworkReply*)));
-	manager->get(QNetworkRequest(url));
+	QEventLoop waitLoop;
+    QNetworkAccessManager *connection = new QNetworkAccessManager();
+    
+    QUrlQuery url = QUrlQuery("http://www.google.com/ig/api");
+    url.addQueryItem("hl", b->GetPluginSetting(GetName(), "Lang","fr").toByteArray());
+	url.addQueryItem("weather", QUrl::toPercentEncoding(ville));
+
+	QUrl qurl = QUrl(url.query(QUrl::FullyEncoded).toUtf8());
+
+    QNetworkRequest requete(qurl);
+    QNetworkReply *http = NULL;
+
+    connect(http, SIGNAL(done(bool)), this, SLOT(analyseXml()));
+
+    http->setProperty("BunnyID", b->GetID());
+
+    http = connection->get(requete);
 }
 
 void PluginWeather::analyseXml(QNetworkReply* networkReply)
