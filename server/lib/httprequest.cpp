@@ -66,19 +66,32 @@ HTTPRequest::HTTPRequest(QByteArray const& data):type(INVALID)
 
 QString HTTPRequest::toString() const
 {
+	// QString s;
+	// s.append(QString("<ul><li>URL : %1</li>").arg(QString(uri)));
+	// s.append("<li>Get Args : <br /><ul>");
+	// foreach (QString str, getData.keys())
+	// 	s.append(QString("<li>%1 => %2</li>").arg(str,getData.value(str)));
+	// s.append("</ul></li>");
+	// if(type == POST)
+	// {
+	// 	s.append("<li>Post Args : <br /><ul>");
+	// 	foreach (QString str, formPostData.keys())
+	// 		s.append(QString("<li>%1 => %2</li>").arg(str,formPostData.value(str)));
+	// 	s.append("</ul></li>");
+	// }
+	// s.append("</ul>");
+	// return s;
+
 	QString s;
-	s.append(QString("<ul><li>URL : %1</li>").arg(QString(uri)));
-	s.append("<li>Get Args : <br /><ul>");
+	// URL: '' ARGS: ['',''...], POST
+	s.append(QString("URL: '%1', GET ARGS: ").arg(QString(uri)));
 	foreach (QString str, getData.keys())
-		s.append(QString("<li>%1 => %2</li>").arg(str,getData.value(str)));
-	s.append("</ul></li>");
-	if(type == POST)
-	{
-		s.append("<li>Post Args : <br /><ul>");
+		s.append(QString("['%1', '%2'] ").arg(str, getData.value(str)));
+	if (type == POST) {
+		s.append(QString(" POST ARGS: "));
 		foreach (QString str, formPostData.keys())
-			s.append(QString("<li>%1 => %2</li>").arg(str,formPostData.value(str)));
-		s.append("</ul></li>");
+			s.append(QString("['%1', '%2'] ").arg(str, formPostData.value(str)));
 	}
-	s.append("</ul>");
 	return s;
+
 }
