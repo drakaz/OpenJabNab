@@ -1,7 +1,6 @@
 #ifndef _PLUGINEPHEMERIDE_H_
 #define _PLUGINEPHEMERIDE_H_
 
-#include <QHttp>
 #include <QMultiMap>
 #include <QTextStream>
 #include <QThread>

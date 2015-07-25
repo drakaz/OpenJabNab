@@ -1,10 +1,12 @@
 #include <QDateTime>
 #include <QCryptographicHash>
 #include <QXmlStreamReader>
-#include <QHttp>
 #include <QMapIterator>
 #include <QRegExp>
 #include <QUrl>
+#include <QNetworkAccessManager>
+#include <QNetworkRequest>
+#include <QNetworkReply>
 #include <memory>
 #include "bunny.h"
 #include "bunnymanager.h"
@@ -16,7 +18,7 @@
 #include "settings.h"
 #include "ttsmanager.h"
 
-Q_EXPORT_PLUGIN2(plugin_ephemeride, PluginEphemeride)
+Q_PLUGIN_METADATA(IID "org.openjabnab.plugin.ephemeride" FILE "ephemeride.json");
 
 PluginEphemeride::PluginEphemeride():PluginInterface("ephemeride", "Ephemeride",BunnyPlugin) {}
 
@@ -52,17 +54,22 @@ bool PluginEphemeride::OnClick(Bunny * b, PluginInterface::ClickType type)
 
 void PluginEphemeride::getEphemeridePage(Bunny * b)
 {
-	QHttp* http = new QHttp(this);
-	http->setProperty("BunnyID", b->GetID());
-	connect(http, SIGNAL(done(bool)), this, SLOT(analyseXml()));
-	//http://www.net-pratique.fr/services/saintdujour.php
-	http->setHost("www.net-pratique.fr");
-	http->get("/services/saintdujour.php");
+	QEventLoop waitLoop;
+    QNetworkAccessManager *connection = new QNetworkAccessManager();
+    QUrl url = QUrl("www.net-pratique.fr/services/saintdujour.php");
+    QNetworkRequest requete(url);
+    QNetworkReply *http = NULL;
+
+    connect(http, SIGNAL(done(bool)), this, SLOT(analyseXml()));
+
+    http->setProperty("BunnyID", b->GetID());
+
+    http = connection->get(requete);
 }
 
 void PluginEphemeride::analyseXml()
 {
-	std::auto_ptr<QHttp> http(qobject_cast<QHttp *>(sender()));
+	std::auto_ptr<QNetworkReply> http(qobject_cast<QNetworkReply *>(sender()));
 	Bunny * bunny = BunnyManager::GetBunny(this, http->property("BunnyID").toByteArray());
 	if(!bunny)
 		return;
