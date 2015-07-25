@@ -110,8 +110,6 @@ QByteArray TTSAcapela::CreateNewSound(QString text, QString voice, bool forceOve
     QNetworkRequest requete(qurl);
     QNetworkReply *http = NULL;
 
-	QObject::connect(http, SIGNAL(done(bool)), &loop, SLOT(quit()));
-
 	QString langId = voiceList.value(voice);
 	QString langName = voice;
 
@@ -167,6 +165,7 @@ QByteArray TTSAcapela::CreateNewSound(QString text, QString voice, bool forceOve
 
 	http = connection->post(requete, post_data.toEncoded());
 
+	QObject::connect(http, SIGNAL(finished()), &loop, SLOT(quit()));
 	loop.exec();
 	
 	QByteArray reponse = http->readAll();
