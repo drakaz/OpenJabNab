@@ -3,8 +3,9 @@
 ######################################################################
 
 TEMPLATE = lib
-CONFIG -= debug
-CONFIG += plugin qt release
+CONFIG += plugin qt
+CONFIG += debug_and_release
+
 QT += network
 QT -= gui
 INCLUDEPATH += . ../../../server ../../../lib

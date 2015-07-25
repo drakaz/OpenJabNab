@@ -3,8 +3,9 @@
 ######################################################################
 
 TEMPLATE = lib
-CONFIG += qt release
-CONFIG -= debug
+CONFIG += qt
+CONFIG += debug_and_release
+
 QT += network
 QT -= gui
 TARGET = common
