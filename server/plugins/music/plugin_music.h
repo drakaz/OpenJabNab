@@ -1,7 +1,6 @@
 #ifndef _PLUGINMUSIC_H_
 #define _PLUGINMUSIC_H_
 
-#include <QHttp>
 #include <QMultiMap>
 #include <QTextStream>
 #include <QThread>
