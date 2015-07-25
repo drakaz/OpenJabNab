@@ -1,10 +1,12 @@
 #include <QDateTime>
 #include <QCryptographicHash>
 #include <QXmlStreamReader>
-#include <QHttp>
 #include <QMapIterator>
 #include <QRegExp>
 #include <QUrl>
+#include <QNetworkAccessManager>
+#include <QNetworkRequest>
+#include <QNetworkReply>
 #include <memory>
 #include "bunny.h"
 #include "bunnymanager.h"
@@ -16,7 +18,7 @@
 #include "settings.h"
 #include "ttsmanager.h"
 
-Q_EXPORT_PLUGIN2(plugin_cinema, PluginCinema)
+Q_PLUGIN_METADATA(IID "org.openjabnab.plugin.cinema" FILE "cinema.json");
 
 PluginCinema::PluginCinema():PluginInterface("cinema", "Sorties cinema de la semaine",BunnyZtampPlugin) { }
 
@@ -42,16 +44,22 @@ bool PluginCinema::OnClick(Bunny * b, PluginInterface::ClickType type)
 
 void PluginCinema::getCinemaPage(Bunny * b)
 {
-	QHttp* http = new QHttp(this);
-	http->setProperty("BunnyID", b->GetID());
-	connect(http, SIGNAL(done(bool)), this, SLOT(analyseXml()));
-	http->setHost("www.cinefil.com");
-	http->get("/rss-sorties-cinema-de-la-semaine");
+	QEventLoop waitLoop;
+    QNetworkAccessManager *connection = new QNetworkAccessManager();
+    QUrl url = QUrl("www.cinefil.com/rss-sorties-cinema-de-la-semaine");
+    QNetworkRequest requete(url);
+    QNetworkReply *http = NULL;
+
+    connect(http, SIGNAL(done(bool)), this, SLOT(analyseXml()));
+
+    http->setProperty("BunnyID", b->GetID());
+
+    http = connection->get(requete);
 }
 
 void PluginCinema::analyseXml()
 {
-	std::auto_ptr<QHttp> http(qobject_cast<QHttp *>(sender()));
+	std::auto_ptr<QNetworkReply> http(qobject_cast<QNetworkReply *>(sender()));
 	Bunny * bunny = BunnyManager::GetBunny(this, http->property("BunnyID").toByteArray());
 	if(!bunny)
 		return;

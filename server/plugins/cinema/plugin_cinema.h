@@ -1,7 +1,6 @@
 #ifndef _PLUGINCINEMA_H_
 #define _PLUGINCINEMA_H_
 
-#include <QHttp>
 #include <QMultiMap>
 #include <QTextStream>
 #include <QThread>
