@@ -1,7 +1,6 @@
 #ifndef _TTSACAPELA_H_
 #define _TTSACAPELA_H_
 
-#include <QHttp>
 #include <QMultiMap>
 #include <QTextStream>
 #include <QThread>
