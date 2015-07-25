@@ -5,6 +5,7 @@
 #include <QNetworkReply>
 #include <QMapIterator>
 #include <QRegExp>
+#include <QUrlQuery>
 #include <memory>
 #include "bunny.h"
 #include "bunnymanager.h"
@@ -16,8 +17,7 @@
 #include "settings.h"
 #include "ttsmanager.h"
 
-
-Q_EXPORT_PLUGIN2(plugin_airquality, PluginAirquality)
+Q_PLUGIN_METADATA(IID "org.openjabnab.plugin.airquality" FILE "airquality.json");
 
 PluginAirquality::PluginAirquality():PluginInterface("airquality", "Air quality plugin", BunnyZtampPlugin)
 {
@@ -270,8 +270,8 @@ PluginAir_Worker::PluginAir_Worker(PluginAirquality * p, Bunny * bu, QString c, 
 void PluginAir_Worker::run()
 {
 	qualities << "inconnue" << "très bonne" << "très bonne" << "bonne" << "bonne" << "moyenne" << "médiocre" << "médiocre" << "mauvaise" << "mauvaise" << "très mauvaise";
-	QUrl* data = new QUrl("http://data/?" + buffer);
-	QStringList cities = data->queryItemValue("NomVille").toLower().split(",");
+	QUrlQuery data = QUrlQuery("http://data/?" + buffer);
+	QStringList cities = data.queryItemValue("NomVille").toLower().split(",");
 	plugin->SetSettings("config/city", cities);
 
 	if(city != "")
@@ -281,8 +281,8 @@ void PluginAir_Worker::run()
 		QByteArray message;
 		if(index != -1)
 		{
-			QStringList i1 = data->queryItemValue("I1").split(",", QString::KeepEmptyParts);
-			QStringList i2 = data->queryItemValue("I2").split(",", QString::KeepEmptyParts);
+			QStringList i1 = data.queryItemValue("I1").split(",", QString::KeepEmptyParts);
+			QStringList i2 = data.queryItemValue("I2").split(",", QString::KeepEmptyParts);
 			quality = (i2.at(index) != "" ? i2.at(index) : i1.at(index)).toInt();
 		}
 		else
