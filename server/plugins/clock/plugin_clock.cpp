@@ -7,7 +7,7 @@
 #include "plugin_clock.h"
 #include "ttsmanager.h"
 
-Q_EXPORT_PLUGIN2(plugin_clock, PluginClock)
+Q_PLUGIN_METADATA(IID "org.openjabnab.plugin.clock" FILE "clock.json");
 
 PluginClock::PluginClock():PluginInterface("clock", "Clock",BunnyPlugin)
 {
