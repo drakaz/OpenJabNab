@@ -10,7 +10,7 @@
 #include "log.h"
 #include "settings.h"
 
-Q_EXPORT_PLUGIN2(plugin_rfid, PluginRFID)
+Q_PLUGIN_METADATA(IID "org.openjabnab.plugin.rfid" FILE "rfid.json");
 
 PluginRFID::PluginRFID():PluginInterface("rfid", "Manage RFID requests", SystemPlugin) {}
 
@@ -23,8 +23,8 @@ bool PluginRFID::HttpRequestHandle(HTTPRequest & request)
 		QString tagId = request.GetArg("t");
 		SetSettings("global/LastTag", tagId);
 
-		Ztamp * z = ZtampManager::GetZtamp(this, tagId.toAscii());
-		Bunny * b = BunnyManager::GetBunny(this, serialnumber.toAscii());
+        Ztamp * z = ZtampManager::GetZtamp(this, tagId.toLatin1());
+        Bunny * b = BunnyManager::GetBunny(this, serialnumber.toLatin1());
 		b->SetPluginSetting(GetName(), "LastTag", tagId);
 		/* Get Owner of the bunny */
 		QString Bac = b->GetGlobalSetting("OwnerAccount","").toString();
@@ -33,8 +33,8 @@ bool PluginRFID::HttpRequestHandle(HTTPRequest & request)
 			QStringList Zac = z->GetGlobalSetting("OwnerAccounts","").toStringList();
 			/* None, add it to this account */
 			if(!Zac.contains(Bac)) {
-				Account *Ac = AccountManager::GetAccountByLogin(Bac.toAscii());
-				Ac->AddZtamp(tagId.toAscii());
+                Account *Ac = AccountManager::GetAccountByLogin(Bac.toLatin1());
+                Ac->AddZtamp(tagId.toLatin1());
 				Zac.append(Bac);
 				z->SetGlobalSetting("OwnerAccounts",Zac);
 				LogWarning(QString("Ztamp: %1 added to account %2 by bunny %3").arg(tagId,Bac,serialnumber));
@@ -43,7 +43,7 @@ bool PluginRFID::HttpRequestHandle(HTTPRequest & request)
 
 		if (z->OnRFID(b))
 			return true;
-		if (b->OnRFID(QByteArray::fromHex(tagId.toAscii())))
+        if (b->OnRFID(QByteArray::fromHex(tagId.toLatin1())))
 			return true;
 	}
 	return false;
@@ -70,7 +70,7 @@ PLUGIN_API_CALL(PluginRFID::Api_GetLastTag)
 
 PLUGIN_API_CALL(PluginRFID::Api_GetLastTagForBunny)
 {
-	Bunny * b = BunnyManager::GetBunny(this, hRequest.GetArg("sn").toAscii());
+    Bunny * b = BunnyManager::GetBunny(this, hRequest.GetArg("sn").toLatin1());
 	if(!account.IsAdmin())
 		return new ApiManager::ApiError("Access denied");
 

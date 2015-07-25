@@ -7,7 +7,7 @@
 #include "log.h"
 #include "settings.h"
 
-Q_EXPORT_PLUGIN2(plugin_record, PluginRecord)
+Q_PLUGIN_METADATA(IID "org.openjabnab.plugin.record" FILE "record.json");
 
 PluginRecord::PluginRecord():PluginInterface("record", "Manage Record requests", SystemPlugin)
 {
@@ -29,7 +29,7 @@ bool PluginRecord::HttpRequestHandle(HTTPRequest & request)
 		QFile wavFile( filepath );
 		if(wavFile.open(QFile::WriteOnly)) {
 			wavFile.write(request.GetPostRaw());
-			Bunny * b = BunnyManager::GetBunny(this, serialnumber.toAscii());
+            Bunny * b = BunnyManager::GetBunny(this, serialnumber.toLatin1());
 			b->SetGlobalSetting("LastRecord", filename);
 		} else {
 			LogError("Impossible to write record file");
