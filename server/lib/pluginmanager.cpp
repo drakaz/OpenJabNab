@@ -154,8 +154,9 @@ void PluginManager::HttpRequestBefore(HTTPRequest & request)
 {
 	// Call RequestBefore for all plugins
 	foreach(PluginInterface * plugin, listOfPlugins)
-		if(plugin->GetEnable())
+		if(plugin->GetEnable()) {
 			plugin->HttpRequestBefore(request);
+		}
 }
 
 bool PluginManager::HttpRequestHandle(HTTPRequest & request)
@@ -163,8 +164,10 @@ bool PluginManager::HttpRequestHandle(HTTPRequest & request)
 	// Call GetAnswer for all plugins until one returns true
 	foreach(PluginInterface * plugin, listOfPlugins)
 	{
-		if(plugin->GetEnable() && plugin->HttpRequestHandle(request))
+		if(plugin->GetEnable() && plugin->HttpRequestHandle(request)) {
+			LogInfo(QString("Plugin %1 responded").arg(plugin->GetName()));
 			return true;
+		}
 	}
 	return false;
 }
@@ -173,8 +176,9 @@ void PluginManager::HttpRequestAfter(HTTPRequest & request)
 {
 	// Call RequestAfter for all plugins
 	foreach(PluginInterface * plugin, listOfPlugins)
-		if(plugin->GetEnable())
+		if(plugin->GetEnable()) {
 			plugin->HttpRequestAfter(request);
+		}
 }
 
 /*****************************************************/
