@@ -1,12 +1,16 @@
-#include <QHttp>
 #include <QDebug>
 #include <QUrl>
+#include <QUrlQuery>
 #include <QXmlStreamReader>
+#include <QNetworkAccessManager>
+#include <QNetworkRequest>
+#include <QNetworkReply>
+#include <QObject>
 #include "bunny.h"
 #include "account.h"
 #include "plugin_annuaire.h"
 
-Q_EXPORT_PLUGIN2(plugin_annuaire, PluginAnnuaire)
+Q_PLUGIN_METADATA(IID "org.openjabnab.plugin.annuaire" FILE "annuaire.json");
 
 PluginAnnuaire::PluginAnnuaire():PluginInterface("annuaire", "Register the bunny on the central directory", SystemPlugin)
 {
@@ -18,19 +22,44 @@ void PluginAnnuaire::OnBunnyConnect(Bunny * b)
 {
 	QString server = GetSettings("global/URL", "").toString();
 	if(server != "") {
-		QHttp *http = new QHttp(server,80);
+    	QNetworkAccessManager *connection = new QNetworkAccessManager();
+   
 		QString api = b->GetGlobalSetting("VApiEnable", false).toBool() ? "1" : "0";
 		QString pub = b->GetGlobalSetting("VApiPublic", false).toBool() ? "1" : "0";
-		http->get("/nabconnection.php?m=" + b->GetID() + "&n="+ b->GetBunnyName() + "&s=" + GlobalSettings::GetString("OpenJabNabServers/PingServer") + "&ip=" + b->GetGlobalSetting("LastIP", QString("")).toString() + "&api=" + api + "&public=" + pub);
+
+		QUrlQuery url = QUrlQuery(server + "/nabconnection.php");
+		url.addQueryItem("m", b->GetID());
+		url.addQueryItem("n", b->GetBunnyName());
+		url.addQueryItem("s", GlobalSettings::GetString("OpenJabNabServers/PingServer"));
+		url.addQueryItem("ip", b->GetGlobalSetting("LastIP", QString("")).toString());
+		url.addQueryItem("api", api);
+		url.addQueryItem("public", pub);
+
+		QUrl qurl = QUrl(url.query(QUrl::FullyEncoded).toUtf8());
+
+	    QNetworkRequest requete(qurl);
+	    QNetworkReply *http = NULL;
+
+	    http = connection->get(requete);    
 	}
 }
 
 QList<BunnyInfos> PluginAnnuaire::SearchBunnyByName(QString name)
 {
 	QEventLoop loop;
+    QNetworkAccessManager *connection = new QNetworkAccessManager();
 
-	QHttp *http = new QHttp(GetSettings("global/URL", "").toString(), 80);
-	http->get("/whois.php?n=" + QUrl::toPercentEncoding(name));
+	QString server = GetSettings("global/URL").toString();
+	QUrlQuery url = QUrlQuery(server + "/whois.php");
+	url.addQueryItem("n", QUrl::toPercentEncoding(name));
+
+	QUrl qurl = QUrl(url.query(QUrl::FullyEncoded).toUtf8());
+
+	QNetworkRequest requete(qurl);
+	QNetworkReply *http = NULL;
+
+	http = connection->get(requete);
+
 	QObject::connect(http, SIGNAL(done(bool)), &loop, SLOT(quit()));
 	loop.exec();
 
@@ -56,7 +85,7 @@ QList<BunnyInfos> PluginAnnuaire::SearchBunnyByName(QString name)
 			}
 			else if(currentTag == "macaddress")
 			{
-				currentBunny.ID = xml.text().toString().toAscii();
+				currentBunny.ID = xml.text().toString().toLatin1();
 			}
 			else if(currentTag == "server")
 			{
@@ -75,9 +104,19 @@ QList<BunnyInfos> PluginAnnuaire::SearchBunnyByName(QString name)
 QList<BunnyInfos> PluginAnnuaire::SearchBunnyByMac(QByteArray ID)
 {
 	QEventLoop loop;
+    QNetworkAccessManager *connection = new QNetworkAccessManager();
 
-	QHttp *http = new QHttp(GetSettings("global/URL", "").toString(), 80);
-	http->get("/whois.php?nm" + QUrl::toPercentEncoding(QString(ID)));
+	QString server = GetSettings("global/URL").toString();
+	QUrlQuery url = QUrlQuery(server + "/whois.php");
+	url.addQueryItem("nm", QUrl::toPercentEncoding(ID));
+
+	QUrl qurl = QUrl(url.query(QUrl::FullyEncoded).toUtf8());
+
+	QNetworkRequest requete(qurl);
+	QNetworkReply *http = NULL;
+
+	http = connection->get(requete);
+
 	QObject::connect(http, SIGNAL(done(bool)), &loop, SLOT(quit()));
 	loop.exec();
 
@@ -103,7 +142,7 @@ QList<BunnyInfos> PluginAnnuaire::SearchBunnyByMac(QByteArray ID)
 			}
 			else if(currentTag == "macaddress")
 			{
-				currentBunny.ID = xml.text().toString().toAscii();
+				currentBunny.ID = xml.text().toString().toLatin1();
 			}
 			else if(currentTag == "server")
 			{
@@ -155,7 +194,7 @@ PLUGIN_API_CALL(PluginAnnuaire::Api_SearchBunnyByMac)
 {
 	Q_UNUSED(account);
 
-	QList<BunnyInfos> whois = SearchBunnyByMac(hRequest.GetArg("mac").toAscii());
+	QList<BunnyInfos> whois = SearchBunnyByMac(hRequest.GetArg("mac").toLatin1());
 	QString xml = "";
 	foreach(BunnyInfos b, whois)
 	{
@@ -188,10 +227,10 @@ PLUGIN_API_CALL(PluginAnnuaire::Api_SearchBunnyByName)
 PLUGIN_API_CALL(PluginAnnuaire::Api_VerifyMacToken)
 {
 	Q_UNUSED(account);
-	Bunny * b = BunnyManager::GetBunny(hRequest.GetArg("mac").toAscii());
+	Bunny * b = BunnyManager::GetBunny(hRequest.GetArg("mac").toLatin1());
 	QString xml = "";
 		
-	if (hRequest.GetArg("reqtoken").toAscii()==b->GetGlobalSetting("VApiToken","FAILED").toString() ) 
+	if (hRequest.GetArg("reqtoken").toLatin1()==b->GetGlobalSetting("VApiToken","FAILED").toString() ) 
 		xml += "<verify>true</verify>\n";
 	else 
 		xml += "<verify>false</verify>\n";
