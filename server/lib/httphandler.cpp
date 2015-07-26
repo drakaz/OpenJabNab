@@ -24,8 +24,11 @@ HttpHandler::~HttpHandler() {}
 void HttpHandler::ReceiveData()
 {
 	receivedData += incomingHttpSocket->readAll();
-	if(bytesToReceive == 0 && (receivedData.size() >= 4))
-		bytesToReceive = *(int *)receivedData.left(4).constData();
+	//if(bytesToReceive == 0 && (receivedData.size() >= 4))
+	//	bytesToReceive = *(int *)receivedData.left(4).constData();
+	bytesToReceive = receivedData.length();
+
+	LogInfo( QString("bytesToReceive: %1, receivedData: %2").arg(QString::number(bytesToReceive), QString::number(receivedData.size())));
 
 	if(bytesToReceive != 0 && (receivedData.size() == bytesToReceive))
 		HandleBunnyHTTPRequest();
