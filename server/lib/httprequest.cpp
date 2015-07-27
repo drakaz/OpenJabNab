@@ -53,15 +53,21 @@ HTTPRequest::HTTPRequest(QByteArray const& data):type(INVALID)
 			LogError("HTTP Request : Invalid type");
 			return;
 	}
+
 	// Parse URI
-    QUrlQuery url(rawUri);
-    if(!url.isEmpty())
+	QUrl uriInst(rawUri);
+
+    QUrlQuery url(uriInst.query());
+    uri = uriInst.path();
+
+    if(!url.isEmpty() && uriInst.isValid())
 	{
         QList<QPair<QString, QString> > items = url.queryItems();
-		typedef QPair<QString, QString> queryItemDef;
-		foreach(queryItemDef item, items)
-            getData[QUrl::fromPercentEncoding(item.first.toLatin1())] = QUrl::fromPercentEncoding(item.second.toLatin1());
-	}
+        for (QList< QPair<QString, QString> >::iterator i = items.begin(); i != items.end(); i++) {
+        	getData[i->first] = i->second;
+        }
+	} else
+		LogError("rawUri is empty or invalid");
 }
 
 QString HTTPRequest::toString() const
