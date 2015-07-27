@@ -21,6 +21,7 @@ mkdir $pluginLower
 cp TEMPLATE/plugin_TEMPLATE.cpp $pluginLower/plugin_$pluginLower.cpp
 cp TEMPLATE/plugin_TEMPLATE.h $pluginLower/plugin_$pluginLower.h
 cp TEMPLATE/TEMPLATE.pro $pluginLower/$pluginLower.pro
+cp TEMPLATE/TEMPLATE.json $pluginLower/$pluginLower.json
 
 sed -i -s "s/TEMPLATECLASSUPPER/$pluginClassNameUpper/g" $pluginLower/*
 sed -i -s "s/TEMPLATECLASS/$pluginClassName/g" $pluginLower/*
