@@ -54,7 +54,7 @@ void PluginTV::getTVPage(Bunny * b)
 {
 	QEventLoop waitLoop;
     QNetworkAccessManager *connection = new QNetworkAccessManager();
-    QUrl url = QUrl("programme-tv.orange.fr/rss/fluxRssProgrammeSoiree.xml");
+    QUrl url = QUrl("http://programme-tv.orange.fr/rss/fluxRssProgrammeSoiree.xml");
     QNetworkRequest requete(url);
     QNetworkReply *http = NULL;
 

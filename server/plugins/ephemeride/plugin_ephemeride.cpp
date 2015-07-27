@@ -54,15 +54,16 @@ void PluginEphemeride::getEphemeridePage(Bunny * b)
 {
 	QEventLoop waitLoop;
     QNetworkAccessManager *connection = new QNetworkAccessManager();
-    QUrl url = QUrl("www.net-pratique.fr/services/saintdujour.php");
+    QUrl url = QUrl("http://www.net-pratique.fr/services/saintdujour.php");
     QNetworkRequest requete(url);
     QNetworkReply *http = NULL;
 
     connect(http, SIGNAL(done(bool)), this, SLOT(analyseXml()));
 
-    http->setProperty("BunnyID", b->GetID());
+    if (http)
+    	http->setProperty("BunnyID", b->GetID());
 
-    http = connection->get(requete);
+    (void)connection->get(requete);
 }
 
 void PluginEphemeride::analyseXml()

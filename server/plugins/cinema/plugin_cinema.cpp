@@ -44,7 +44,7 @@ void PluginCinema::getCinemaPage(Bunny * b)
 {
 	QEventLoop waitLoop;
     QNetworkAccessManager *connection = new QNetworkAccessManager();
-    QUrl url = QUrl("www.cinefil.com/rss-sorties-cinema-de-la-semaine");
+    QUrl url = QUrl("http://www.cinefil.com/rss-sorties-cinema-de-la-semaine");
     QNetworkRequest requete(url);
     QNetworkReply *http = NULL;
 

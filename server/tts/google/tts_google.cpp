@@ -45,7 +45,7 @@ QByteArray TTSGoogle::CreateNewSound(QString text, QString voice, bool forceOver
 
 	// Fetch MP3
 	QNetworkAccessManager *connection = new QNetworkAccessManager;
-	QUrl qurl = QUrl("translate.google.com/translate_tts");
+	QUrl qurl = QUrl("http://translate.google.com/translate_tts");
     QNetworkRequest requete(qurl);
     QNetworkReply *http = NULL;
 

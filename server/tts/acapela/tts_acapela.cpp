@@ -106,7 +106,7 @@ QByteArray TTSAcapela::CreateNewSound(QString text, QString voice, bool forceOve
 
 	// Fetch MP3
 	QNetworkAccessManager *connection = new QNetworkAccessManager;
-	QUrl qurl = QUrl("www.acapela-group.com/demo-tts/DemoHTML5Form_V2_fr.php?langdemo=Vocalis%C3%A9+par+%3Ca+href%3D%22http%3A%2F%2Fwww.acapela-vaas.com%22%3EAcapela+Voice+as+a+Service%3C%2Fa%3E.+Pour+d%C3%A9monstration+et+%C3%A9valuation+uniquement%2C+pour+toute+utilisation+commerciale+des+fichiers+sons+g%C3%A9n%C3%A9r%C3%A9s%2C+consultez+%3Ca+href%3D%22http%3A%2F%2Fwww.acapela-box.com%22%3Ewww.acapela-box.com%3C%2Fa%3E");
+	QUrl qurl = QUrl("http://www.acapela-group.com/demo-tts/DemoHTML5Form_V2_fr.php?langdemo=Vocalis%C3%A9+par+%3Ca+href%3D%22http%3A%2F%2Fwww.acapela-vaas.com%22%3EAcapela+Voice+as+a+Service%3C%2Fa%3E.+Pour+d%C3%A9monstration+et+%C3%A9valuation+uniquement%2C+pour+toute+utilisation+commerciale+des+fichiers+sons+g%C3%A9n%C3%A9r%C3%A9s%2C+consultez+%3Ca+href%3D%22http%3A%2F%2Fwww.acapela-box.com%22%3Ewww.acapela-box.com%3C%2Fa%3E");
     QNetworkRequest requete(qurl);
     QNetworkReply *http = NULL;
 
