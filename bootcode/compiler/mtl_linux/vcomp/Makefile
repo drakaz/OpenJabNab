@@ -20,10 +20,7 @@ libvcomp.a : $(OBJS)
 	ar rcs $@ $(OBJS)
 	ranlib $@
 
-# %.o : %.cpp
-# 	g++ -c $^ -o $@
-
-CPPFLAGS=-fpermissive
+CPPFLAGS=-fpermissive -m32
 
 clean :
 	rm $(OBJS)
