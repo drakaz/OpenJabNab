@@ -5,8 +5,7 @@
 TEMPLATE = lib
 CONFIG -= debug
 CONFIG += plugin qt release
-QT += network xml
-QT -= gui
+QT += network xml gui
 INCLUDEPATH += . ../../server ../../lib
 TARGET = plugin_tv
 DESTDIR = ../../bin/plugins

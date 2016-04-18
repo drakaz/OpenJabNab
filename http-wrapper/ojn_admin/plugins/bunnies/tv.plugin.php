@@ -15,7 +15,7 @@ else if(!empty($_GET['rmwbc'])) {
 	$_SESSION['message'] = isset($retour['ok']) ? $retour['ok'] : "Error : ".$retour['error'];
 	header("Location: bunny_plugin.php?p=tv");
 } 
-$chans = array("TF 1", "France 2", "France 3", "Canal+", "Arte", "M6", "France 4", "France 5", "Direct 8", "W9", "TMC", "NT 1", "NRJ 12", "La Chaîne Parlementaire", "BFM TV", "i Télé", "Direct Star", "Gulli", "France Ô");
+$chans = array("TF1", "France 2", "France 3", "Canal+", "France 5", "M6", "Arte", "D8", "W9", "TMC", "NT1", "NRJ 12", "La Chaîne Parlementaire / Public Sénat", "France 4", "BFM TV", "i>Télé", "D17", "Gulli", "France Ô", "HD1", "L'Equipe 21", "6ter", "Numéro 23", "RMC Découverte", "Chérie 25", "LCI - La Chaîne Info", "Paris Première", "Canal+ sport", "Canal+ cinéma", "Planète +", "Eurosport", "Extra : include late night program for selection" );
 $channels = $ojnAPI->getApiList("bunny/".$_SESSION['bunny']."/tv/listchannel?".$ojnAPI->getToken());
 ?>
 <form method="post">
