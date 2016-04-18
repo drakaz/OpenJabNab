@@ -5,6 +5,7 @@
 #include <QMapIterator>
 #include <QRegExp>
 #include <QUrl>
+#include <QTextDocument>
 #include <memory>
 #include "bunny.h"
 #include "bunnymanager.h"
@@ -27,7 +28,7 @@ PluginTV::~PluginTV()
 
 bool PluginTV::Init()
 {
-	QByteArray ceSoir = TTSManager::CreateNewSound("Programme télé de ce soir", "Claire");
+	QByteArray ceSoir = TTSManager::CreateNewSound("Programme tele de ce soir", "Claire");
 	if(ceSoir.isNull())
 		return false;
 
@@ -55,8 +56,8 @@ void PluginTV::getTVPage(Bunny * b)
 	QHttp* http = new QHttp(this);
 	http->setProperty("BunnyID", b->GetID());
 	connect(http, SIGNAL(done(bool)), this, SLOT(analyseXml()));
-	http->setHost("programme-tv.orange.fr");
-	http->get("/rss/fluxRssProgrammeSoiree.xml");
+	http->setHost("static.programme-tv.net");
+	http->get("/rss/ns_tnt.xml");
 }
 
 void PluginTV::analyseXml()
@@ -88,7 +89,7 @@ void PluginTV::OnBunnyConnect(Bunny * b)
 	QStringList channels = b->GetPluginSetting(GetName(), "Channels", QStringList()).toStringList();
 	if(channels.count() == 0)
 	{
-		channels << "TF 1" << "France 2" << "France 3" << "Arte" << "M6"; 
+		channels << "TF1" << "France 2" << "France 3" << "Arte" << "M6"; 
 		b->SetPluginSetting(GetName(), "Channels", channels);
 	}
 }
@@ -190,9 +191,11 @@ void PluginTV_Worker::run()
 	QXmlStreamReader xml;
 	xml.clear();
 	xml.addData(buffer);
+	xml.setNamespaceProcessing(true);
 
 	QString currentTag;
-	QString chaine;
+	QString channel;
+	QString title;
 	QByteArray message = plugin->ceSoirMessage;
 	QStringList liste = bunny->GetPluginSetting(plugin->GetName(), "Channels", QStringList()).toStringList();
 	while (!xml.atEnd())
@@ -206,15 +209,42 @@ void PluginTV_Worker::run()
 		{
 			if (currentTag == "title")
 			{
-				QString title = xml.text().toString();
-				QRegExp rx("(.*) - (\\d\\d:\\d\\d) - (.*)");
-				if(rx.indexIn(title) != -1)
+				title = xml.text().toString();
+				// LogDebug("Found title : " + title);
+			}
+			if (currentTag == "channel")
+			{
+				QString encoded = xml.text().toString();
+				QTextDocument html;
+				html.setHtml(encoded);
+				QString newchannel = html.toPlainText();
+				// Remove unwanted char from some channel
+				QString spokechannel = newchannel;
+				spokechannel.remove(QRegExp("[-`~!@#$%^&*()_—+=|:;<>«»,.?/{}]"));
+				// LogDebug("Found channel : " + newchannel );
+				if (liste.contains("Extra : include late night program for selection") and newchannel != channel)
 				{
-					if(chaine != rx.cap(1) && liste.contains(rx.cap(1)))
+					channel = newchannel;
+					if (liste.contains(channel))
 					{
-						// LogDebug(rx.cap(4) +" : "+rx.cap(3));
-						chaine = rx.cap(1);
-						QByteArray file = TTSManager::CreateNewSound(rx.cap(1).trimmed() + ", " + rx.cap(3).trimmed(), "Claire");
+						QByteArray file = TTSManager::CreateNewSound(spokechannel.trimmed() + ", prime time, " + title.trimmed(), "Claire");
+						message += "MU " + file + "\nPL 3\nMW\n";
+					}
+				}
+				else if (liste.contains("Extra : include late night program for selection") and newchannel == channel)
+				{
+					if (liste.contains(channel))
+					{
+						QByteArray file = TTSManager::CreateNewSound("puis, " + title.trimmed(), "Claire");
+						message += "MU " + file + "\nPL 3\nMW\n";
+					}
+				}
+				else if (newchannel != channel)
+				{
+					channel = newchannel;
+					if (liste.contains(channel))
+					{
+						QByteArray file = TTSManager::CreateNewSound(spokechannel.trimmed() + ", " + title.trimmed(), "Claire");
 						message += "MU " + file + "\nPL 3\nMW\n";
 					}
 				}
