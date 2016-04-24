@@ -42,7 +42,13 @@ IV) Installation
 5. Configure the Nabaztag/tag to use 'my.domain.com/vl' in advanced settings
 6. Restart the Nabaztag/tag
 
-V) History
+V) Speech recognition
+----------------
+
+Speech recognition come from an university project fork. It use pocketsphinx installed on current serveur to decode a wave file.
+Original code : https://github.com/CheezeCake/OpenJabNab
+
+VI) History
 ----------
 
 * 2008-01-24 v0.01 Initial revision
