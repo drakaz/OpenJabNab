@@ -97,9 +97,6 @@ void HttpHandler::HandleBunnyHTTPRequest()
 
 				QMap<QString, QString> plugins;
 				plugins.insert("heure", "clock");
-				plugins.insert("reconnaissance", "speakerrecognition");
-				plugins.insert("enregistrement", "speakerregistration");
-				plugins.insert("agenda", "agenda");
 
 				QMap<QString, QString>::const_iterator it;
 				for (it = plugins.begin(); it != plugins.end(); ++it)
