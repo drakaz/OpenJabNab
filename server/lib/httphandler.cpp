@@ -91,7 +91,7 @@ void HttpHandler::HandleBunnyHTTPRequest()
 			if (Context::getAvailability()) {
 				LogInfo("available");
 
-				QString recognized = PocketSphinx::recognize(record);
+				QString recognized = QString::fromUtf8(PocketSphinx::recognize(record).toStdString().c_str());
 				LogInfo("Recognized : " + recognized);
 
 
