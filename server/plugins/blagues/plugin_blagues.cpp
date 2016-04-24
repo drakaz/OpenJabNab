@@ -94,81 +94,94 @@ bool PluginBlagues::OnClick(Bunny * b, PluginInterface::ClickType type)
 
 void PluginBlagues::getBlagues(Bunny * b)
 {
-	QDir * dir = GetLocalHTTPFolder();
+	QDir * sdir = GetResourcesFolder();
+	QDir * hdir = GetLocalHTTPFolder();
 	QByteArray message = blaguesMessage;
-	QString filename;
-	if(dir)
+	QStringList list;
+	qsrand(QDateTime::currentDateTime ().toTime_t ());
+	if(sdir)
 	{
-		// Random source selection
-		dir->cd("sources");
-		dir->setNameFilters(QStringList("*.txt"));
-		QStringList list = dir->entryList(QDir::Files|QDir::NoDotAndDotDot);
-		if (list.size() > 0)
+		sdir->cd("sources");
+		sdir->setNameFilters(QStringList("*.txt"));
+		QStringList slist = sdir->entryList(QDir::Files|QDir::NoDotAndDotDot);
+		foreach (const QString &tFilename, slist)
 		{
-			filename = list.at(qrand()%list.count());
-			// LogDebug("Selected source :" + filename);
-			QString filepath = dir->absoluteFilePath(filename);
-
-			// Load file
-			QFile blagueFile (filepath);
-			// Get pre message if exist
-			QFile blagueFilePre (filepath + ".pre");
-			if (blagueFilePre.exists())
-			{
-				blagueFilePre.open(QFile::ReadOnly);
-				QTextStream preflux(&blagueFilePre);	
-				preflux.setCodec(QTextCodec::codecForName("UTF-8"));
-				QString premessage = preflux.readLine();
-				// LogDebug("Premessage found : " + premessage);
-				QByteArray currentBlague = TTSManager::CreateNewSound(premessage, "Claire");
-				message = "MU " + currentBlague + "\nPL 3\nMW\n";
-				blagueFilePre.close();
-			}
+			list.append(sdir->absoluteFilePath(tFilename));
+		}
+	}
+	if (hdir)
+	{
+		hdir->cd("sources");
+		hdir->setNameFilters(QStringList("*.txt"));
+		QStringList hlist = hdir->entryList(QDir::Files|QDir::NoDotAndDotDot);
+		foreach (const QString &tFilename, hlist)
+		{
+			list.append(hdir->absoluteFilePath(tFilename));
+		}
+	}
+	if (list.size() > 0)
+	{
+		QString filepath = list.at(qrand()%list.count());
+		// LogDebug("Selected source :" + filepath);
+		// Load file
+		QFile blagueFile (filepath);
+		// Get pre message if exist
+		QFile blagueFilePre (filepath + ".pre");
+		if (blagueFilePre.exists())
+		{
+			blagueFilePre.open(QFile::ReadOnly);
+			QTextStream preflux(&blagueFilePre);	
+			preflux.setCodec(QTextCodec::codecForName("UTF-8"));
+			QString premessage = preflux.readLine();
+			// LogDebug("Premessage found : " + premessage);
+			QByteArray currentBlague = TTSManager::CreateNewSound(premessage, "Claire");
+			message = "MU " + currentBlague + "\nPL 3\nMW\n";
+			blagueFilePre.close();
+		}
 				
-			int line_count=0;
-			if(blagueFile.open(QFile::ReadOnly))
+		int line_count=0;
+		if(blagueFile.open(QFile::ReadOnly))
+		{
+			QTextStream flux(&blagueFile);
+			flux.setCodec(QTextCodec::codecForName("UTF-8"));
+			// First count lines in file
+			while( !flux.atEnd())
 			{
-				QTextStream flux(&blagueFile);
-				flux.setCodec(QTextCodec::codecForName("UTF-8"));
-				// First count lines in file
-				while( !flux.atEnd())
+				flux.readLine();
+				line_count++;
+			}
+			// Random line
+			qsrand(QDateTime::currentDateTime ().toTime_t ());
+			int random = qrand() % line_count;
+			// Seek to begin
+			flux.seek(0);
+			// Read again and stop on the chosen line
+			int loop = 0;
+			while( !flux.atEnd())
+			{
+				QString blagounette = flux.readLine();
+				if (loop == random)
 				{
-			    		flux.readLine();
-				    	line_count++;
-				}
-				// Random line
-				qsrand(QDateTime::currentDateTime ().toTime_t ());
-				int random = qrand() % line_count;
-				// Seek to begin
-				flux.seek(0);
-				// Read again and stop on the chosen line
-				int loop = 0;
-				while( !flux.atEnd())
-				{
-					QString blagounette = flux.readLine();
-					if (loop == random)
-					{
-						// LogDebug("Selected blagues : " + blagounette); 
-						QRegExp sep("[. ][:][- ]+");
-						QStringList splitted_blagounette = blagounette.split(sep);
-						foreach (const QString &word, splitted_blagounette) {
-							if (!word.trimmed().isEmpty())
-							{
-								QByteArray file = TTSManager::CreateNewSound(word.trimmed(), "Claire");
-								message += "MU " + file + "\nPL 3\nMW\n";
-							}
+					// LogDebug("Selected blagues : " + blagounette); 
+					QRegExp sep("[. ][:][- ]+");
+					QStringList splitted_blagounette = blagounette.split(sep);
+					foreach (const QString &word, splitted_blagounette) {
+						if (!word.trimmed().isEmpty())
+						{
+							QByteArray file = TTSManager::CreateNewSound(word.trimmed(), "Claire");
+							message += "MU " + file + "\nPL 3\nMW\n";
 						}
-						break;
 					}
-					loop++;
+					break;
 				}
-				blagueFile.close();
-				if(b->IsConnected())
-				{
-					QByteArray file = GetBroadcastHTTPPath("mp3/son_blague.mp3");
-					message += "MU "+file+"\nPL 3\nMW\n";
-					b->SendPacket(MessagePacket(message));
-				}
+				loop++;
+			}
+			blagueFile.close();
+			if(b->IsConnected())
+			{
+				QByteArray file = GetBroadcastHTTPPath("mp3/son_blague.mp3");
+				message += "MU "+file+"\nPL 3\nMW\n";
+				b->SendPacket(MessagePacket(message));
 			}
 		}
 	}
