@@ -15,7 +15,7 @@ SessionTimeout=300
 TTS=acapela
 MaxNumberOfBunnies=64
 MaxBurstNumberOfBunnies=72
-pocketsphinx=false
+pocketsphinx=true
 
 [OpenJabNabServers]
 PingServer=my.domain.com
