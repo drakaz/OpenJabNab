@@ -19,7 +19,8 @@ void PocketSphinx::init()
 
 	cfg = cmd_ln_init(NULL, ps_args(), TRUE,
 			"-hmm", "../resources/models/hmm/lium_french_f0",
-			"-fsg", "../resources/models/lm/grammar/grammar.fsg",
+			"-lm", "../resources/models/lm/french3g62K.lm.dmp",
+			//"-fsg", "../resources/models/lm/grammar/grammar.fsg",
 			"-dict", "../resources/models/lm/french_lium/frenchWords62K.dic",
 			NULL);
 
