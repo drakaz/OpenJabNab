@@ -16,6 +16,7 @@ TTS=acapela
 MaxNumberOfBunnies=64
 MaxBurstNumberOfBunnies=72
 pocketsphinx=true
+pocketsphinxusegrammar=false
 
 [OpenJabNabServers]
 PingServer=my.domain.com

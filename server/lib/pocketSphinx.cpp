@@ -17,12 +17,24 @@ void PocketSphinx::init()
 
 	cmd_ln_t* cfg;
 
-	cfg = cmd_ln_init(NULL, ps_args(), TRUE,
-			"-hmm", "../resources/models/hmm/lium_french_f0",
-			"-lm", "../resources/models/lm/french3g62K.lm.dmp",
-			//"-fsg", "../resources/models/lm/grammar/grammar.fsg",
-			"-dict", "../resources/models/lm/french_lium/frenchWords62K.dic",
-			NULL);
+	QString use_grammar = GlobalSettings::GetString("Config/pocketsphinxusegrammar");
+	if (use_grammar == "true")
+	{
+		cfg = cmd_ln_init(NULL, ps_args(), TRUE,
+				"-hmm", "../resources/models/hmm/lium_french_f0",
+				"-fsg", "../resources/models/lm/grammar/grammar.fsg",
+				"-dict", "../resources/models/lm/french_lium/frenchWords62K.dic",
+				NULL);
+	}
+
+	else
+	{
+		cfg = cmd_ln_init(NULL, ps_args(), TRUE,
+				"-hmm", "../resources/models/hmm/lium_french_f0",
+				"-lm", "../resources/models/lm/french3g62K.lm.dmp",
+				"-dict", "../resources/models/lm/french_lium/frenchWords62K.dic",
+				NULL);
+	}
 
 	if (cfg)
 	{
