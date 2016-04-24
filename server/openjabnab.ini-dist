@@ -4,6 +4,7 @@ httpApi = true
 httpVioletApi = true
 xmppListener = true
 RealHttpRoot = ../../http-wrapper/ojn_local/
+ResourcesDir = ../resources/
 HttpRoot = ojn_local
 HttpPluginsFolder = plugins
 StandAloneAuthBypass = false

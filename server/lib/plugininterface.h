@@ -77,6 +77,7 @@ public:
 protected:
 	void SetEnable(bool);
 	QDir * GetLocalHTTPFolder() const;
+	QDir * GetResourcesFolder() const;
 	QByteArray GetBroadcastHTTPPath(QString f) const;
 
 	QSettings * settings;

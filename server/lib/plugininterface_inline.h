@@ -68,6 +68,33 @@ inline void PluginInterface::SetEnable(bool newStatus)
 	}
 }
 
+
+// Resources folder
+inline QDir * PluginInterface::GetResourcesFolder() const
+{
+	QDir resourcesFolder(GlobalSettings::GetString("Config/ResourcesDir"));
+	QString httpPluginsFolder = GlobalSettings::GetString("Config/HttpPluginsFolder");
+	if (!resourcesFolder.cd(httpPluginsFolder))
+	{
+		if (!resourcesFolder.mkdir(httpPluginsFolder))
+		{
+			LogError(QString("Unable to create %1 directory !\n").arg(httpPluginsFolder));
+			return NULL;
+		}
+		resourcesFolder.cd(httpPluginsFolder);
+	}
+	if (!resourcesFolder.cd(pluginName))
+	{
+		if (!resourcesFolder.mkdir(pluginName))
+		{
+			LogError(QString("Unable to create %1/%2 directory !\n").arg(httpPluginsFolder, pluginName));
+			return NULL;
+		}
+		resourcesFolder.cd(pluginName);
+	}
+	return new QDir(resourcesFolder);
+}
+
 // HTTP Data folder
 inline QDir * PluginInterface::GetLocalHTTPFolder() const
 {
