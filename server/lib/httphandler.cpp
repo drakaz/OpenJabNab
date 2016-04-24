@@ -101,7 +101,7 @@ void HttpHandler::HandleBunnyHTTPRequest()
 				QMap<QString, QString>::const_iterator it;
 				for (it = plugins.begin(); it != plugins.end(); ++it)
 				{
-					if (recognized.startsWith(it.key()))
+					if (recognized.contains(it.key()))
 					{
 						PluginInterface* p = PluginManager::Instance().GetPluginByName(*it);
 						LogInfo("starting plugin : " + *it);
