@@ -22,7 +22,7 @@ public:
 	virtual ~PluginEphemeride();
 	virtual bool Init();
 	
-	bool OnClick(Bunny *, PluginInterface::ClickType);
+	bool OnSingleClick(Bunny *);
 	void OnCron(Bunny *, QVariant);
 	void OnBunnyConnect(Bunny *);
 	void OnBunnyDisconnect(Bunny *);

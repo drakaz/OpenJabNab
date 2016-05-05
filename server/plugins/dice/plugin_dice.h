@@ -11,7 +11,7 @@ class PluginDice : public PluginInterface
 public:
 	PluginDice();
 	virtual ~PluginDice();
-	bool OnClick(Bunny *, PluginInterface::ClickType);
+	bool OnAllClick(Bunny *);
 
 };
 

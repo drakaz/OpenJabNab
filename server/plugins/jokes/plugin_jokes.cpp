@@ -82,14 +82,10 @@ void PluginJokes::OnCron(Bunny * b, QVariant)
         createCron(b);
 }
 
-bool PluginJokes::OnClick(Bunny * b, PluginInterface::ClickType type)
+bool PluginJokes::OnAllClick(Bunny * b)
 {
-	if (type == PluginInterface::SingleClick)
-	{
-		getJokes(b);
-		return true;
-	}
-	return false;
+	getJokes(b);
+	return true;
 }
 
 void PluginJokes::getJokes(Bunny * b)

@@ -22,7 +22,7 @@ public:
 	PluginRatp();
 	virtual ~PluginRatp();
 	
-	bool OnClick(Bunny *, PluginInterface::ClickType);
+	bool OnSingleClick(Bunny *);
 	void OnCron(Bunny *, QVariant);
 	bool OnRFID(Bunny * b, QByteArray const& tag);
 	void OnBunnyConnect(Bunny *);

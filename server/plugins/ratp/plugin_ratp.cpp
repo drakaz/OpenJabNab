@@ -39,30 +39,27 @@ void PluginRatp::OnInitPacket(const Bunny *, AmbientPacket &, SleepPacket &)
 {
 }
 
-bool PluginRatp::OnClick(Bunny * b, PluginInterface::ClickType type)
+bool PluginRatp::OnSingleClick(Bunny * b)
 {
-	if (type == PluginInterface::SingleClick) {
-		
-		QString str = b->GetPluginSetting(GetName(), "Default/Arret", "").toString();
-		QString ligne;
-		QString arret;
-		QString direction;
-		QString reseau;
-		int pos = 0;
+	QString str = b->GetPluginSetting(GetName(), "Default/Arret", "").toString();
+	QString ligne;
+	QString arret;
+	QString direction;
+	QString reseau;
+	int pos = 0;
 
-		LogDebug(str);
-		QRegExp rx("([A-Za-z0-9]*)\\|([A-Za-z0-9]*)\\|([A-Za-z0-9]*)\\|([A-Za-z0-9_]*)");
-		if(rx.indexIn(str, pos) != -1){
-			ligne = rx.cap(2);
-			arret = rx.cap(3);
-			direction = rx.cap(4);
-			reseau = rx.cap(1);
-		}
-		
-		if(ligne != "" && arret != "" && direction != "" && reseau != "") {
-			getPageHoraire(b, reseau, ligne, arret, direction);
-			return true;
-		}
+	LogDebug(str);
+	QRegExp rx("([A-Za-z0-9]*)\\|([A-Za-z0-9]*)\\|([A-Za-z0-9]*)\\|([A-Za-z0-9_]*)");
+	if(rx.indexIn(str, pos) != -1){
+		ligne = rx.cap(2);
+		arret = rx.cap(3);
+		direction = rx.cap(4);
+		reseau = rx.cap(1);
+	}
+	
+	if(ligne != "" && arret != "" && direction != "" && reseau != "") {
+		getPageHoraire(b, reseau, ligne, arret, direction);
+		return true;
 	}
 	return false;
 }

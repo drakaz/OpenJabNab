@@ -47,7 +47,7 @@ bool PluginCallURL::OnRFID(Bunny * b, QByteArray const& tag)
 	return false;
 }
 
-bool PluginCallURL::OnClick(Bunny * b, PluginInterface::ClickType)
+bool PluginCallURL::OnAllClick(Bunny * b)
 {
 	QString url = b->GetPluginSetting(GetName(), "Default/CallURL", "").toString();
 	if(url != "") {

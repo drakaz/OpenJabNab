@@ -40,14 +40,10 @@ void PluginEphemeride::OnCron(Bunny * b, QVariant)
 	getEphemeridePage(b);
 }
 
-bool PluginEphemeride::OnClick(Bunny * b, PluginInterface::ClickType type)
+bool PluginEphemeride::OnSingleClick(Bunny * b)
 {
-	if (type == PluginInterface::SingleClick)
-	{
-		getEphemeridePage(b);
-		return true;
-	}
-	return false;
+	getEphemeridePage(b);
+	return true;
 }
 
 void PluginEphemeride::getEphemeridePage(Bunny * b)

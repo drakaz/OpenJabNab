@@ -11,7 +11,8 @@ class PluginTest : public PluginInterface
 public:
 	PluginTest();
 	virtual ~PluginTest();
-	bool OnClick(Bunny *, PluginInterface::ClickType);
+	bool OnSingleClick(Bunny *);
+	bool OnDoubleClick(Bunny *);
 	bool HttpRequestHandle(HTTPRequest &);
 	void InitApiCalls();
 	PLUGIN_BUNNY_API_CALL(Api_LaunchTests);

@@ -15,7 +15,7 @@ public:
 	PluginCallURL();
 	virtual ~PluginCallURL();
 
-	bool OnClick(Bunny *, PluginInterface::ClickType);
+	bool OnAllClick(Bunny *);
 	bool OnRFID(Bunny * b, QByteArray const& tag);
 	void OnCron(Bunny *, QVariant);
 	void OnBunnyConnect(Bunny *);

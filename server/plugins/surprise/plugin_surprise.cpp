@@ -28,14 +28,10 @@ void PluginSurprise::createCron(Bunny * b)
 	Cron::RegisterOneShot(this, GetRandomizedFrequency(frequency), b, QVariant(), NULL);
 }
 
-bool PluginSurprise::OnClick(Bunny * b, PluginInterface::ClickType type)
+bool PluginSurprise::OnAllClick(Bunny * b)
 {
-        if (type == PluginInterface::SingleClick)
-        {
-		SendSurprise(b);
-		return true;
-        }
-        return false;
+	SendSurprise(b);
+	return true;
 }
 
 int PluginSurprise::GetRandomizedFrequency(unsigned int freq)

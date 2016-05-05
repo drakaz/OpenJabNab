@@ -27,29 +27,29 @@ PLUGIN_BUNNY_API_CALL(PluginTest::Api_LaunchTests)
 
 	QString test = hRequest.GetArg("type");
 	if(test == "ambient")
-		PluginTest::OnClick(bunny, PluginInterface::SingleClick);
+		PluginTest::OnSingleClick(bunny);
 	else if(test == "chor")
-		PluginTest::OnClick(bunny, PluginInterface::DoubleClick);
+		PluginTest::OnDoubleClick(bunny);
 	else
 		return new ApiManager::ApiError(QString("Unknown test: %1'").arg(test));
 	return new ApiManager::ApiOk(QString("Test \"%1\" started for bunny '%2'").arg(test, QString(bunny->GetID())));
 }
 
-bool PluginTest::OnClick(Bunny * b, PluginInterface::ClickType type)
+bool PluginTest::OnSingleClick(Bunny * b)
 {
-	if (type == PluginInterface::SingleClick)
-	{
-		// AmbientPacket Test
-		angle++;
-		AmbientPacket p;
-		p.SetEarsPosition(angle%18, 0);
-		b->SendPacket(p);
-	}
-	else if (type == PluginInterface::DoubleClick)
-	{
-		// Chor test
-		b->SendPacket(MessagePacket("CH broadcast/openjabnab/plugin_test/chor1.chor\n"));
-	}
+	// AmbientPacket Test
+	angle++;
+	AmbientPacket p;
+	p.SetEarsPosition(angle%18, 0);
+	b->SendPacket(p);
+
+	return true;
+}
+bool PluginTest::OnDoubleClick(Bunny * b)
+{
+	// Chor test
+	b->SendPacket(MessagePacket("CH broadcast/openjabnab/plugin_test/chor1.chor\n"));
+
 	return true;
 }
 

@@ -27,7 +27,7 @@ PluginClock::~PluginClock()
 	Cron::UnregisterAll(this);
 }
 
-bool PluginClock::OnClick(Bunny * b, PluginInterface::ClickType)
+bool PluginClock::OnAllClick(Bunny * b)
 {
 	if(b->IsIdle())
 	{

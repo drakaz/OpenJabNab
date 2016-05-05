@@ -21,7 +21,7 @@ private slots:
 public:
 	PluginWeather();
 	virtual ~PluginWeather();
-	bool OnClick(Bunny *, PluginInterface::ClickType);
+	bool OnSingleClick(Bunny *);
 	bool OnRFID(Bunny * b, QByteArray const& tag);
 	void OnCron(Bunny *, QVariant);
 	void OnBunnyConnect(Bunny *);

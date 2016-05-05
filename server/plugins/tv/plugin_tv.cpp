@@ -40,14 +40,10 @@ void PluginTV::OnCron(Bunny * b, QVariant)
 	getTVPage(b);
 }
 
-bool PluginTV::OnClick(Bunny * b, PluginInterface::ClickType type)
+bool PluginTV::OnSingleClick(Bunny * b)
 {
-	if (type == PluginInterface::SingleClick)
-	{
-		getTVPage(b);
-		return true;
-	}
-	return false;
+	getTVPage(b);
+	return true;
 }
 
 void PluginTV::getTVPage(Bunny * b)

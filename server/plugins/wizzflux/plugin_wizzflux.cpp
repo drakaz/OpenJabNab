@@ -69,7 +69,7 @@ bool PluginWizzflux::OnRFID(Bunny * b, QByteArray const& tag)
 	return false;
 }
 
-bool PluginWizzflux::OnClick(Bunny * b, PluginInterface::ClickType)
+bool PluginWizzflux::OnAllClick(Bunny * b)
 {
 	QString flux = b->GetPluginSetting(GetName(), "DefaultFlux", QString()).toString();
 	if(flux.length()) {

@@ -92,7 +92,7 @@ bool PluginWebradio::OnRFID(Bunny * b, QByteArray const& tag)
 	return false;
 }
 
-bool PluginWebradio::OnClick(Bunny * b, PluginInterface::ClickType)
+bool PluginWebradio::OnAllClick(Bunny * b)
 {
 	QString radio = b->GetPluginSetting(GetName(), "DefaultWebradio", QString()).toString();
 	if(radio.length())

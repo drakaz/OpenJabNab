@@ -12,7 +12,7 @@ public:
 	PluginSurprise();
 	virtual ~PluginSurprise();
 
-	virtual bool OnClick(Bunny *, PluginInterface::ClickType);
+	virtual bool OnAllClick(Bunny *);
 	void OnBunnyConnect(Bunny *);
 	void OnBunnyDisconnect(Bunny *);
 	virtual void OnCron(Bunny *, QVariant);

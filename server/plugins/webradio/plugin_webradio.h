@@ -17,7 +17,7 @@ public:
 	virtual bool OnRFID(Bunny *, QByteArray const&);
 	virtual bool OnRFID(Ztamp *, Bunny *);
 	
-	bool OnClick(Bunny *, PluginInterface::ClickType);
+	bool OnAllClick(Bunny *);
 
 	void OnBunnyConnect(Bunny *);
 	void OnBunnyDisconnect(Bunny *);

@@ -30,14 +30,10 @@ void PluginCinema::OnCron(Bunny * b, QVariant)
 	getCinemaPage(b);
 }
 
-bool PluginCinema::OnClick(Bunny * b, PluginInterface::ClickType type)
+bool PluginCinema::OnSingleClick(Bunny * b)
 {
-	if (type == PluginInterface::SingleClick)
-	{
-		getCinemaPage(b);
-		return true;
-	}
-	return false;
+	getCinemaPage(b);
+	return true;
 }
 
 void PluginCinema::getCinemaPage(Bunny * b)
