@@ -49,6 +49,12 @@ class ojnApi {
 		return $this->EnabledPlugins;
 	}
 
+	public function getListOfClickablePlugins($reload) {
+		if(empty($this->ClickablePlugins) || $reload)
+			$this->ClickablePlugins = $this->getApiMapped("plugins/getListOfClickablePlugins?".$this->getToken());
+		return $this->ClickablePlugins;
+	}
+
 	public function getListOfPlugins($reload) {
 		if(empty($this->Plugins) || $reload)
 			$this->Plugins = $this->getApiMapped("plugins/getListOfPlugins?".$this->getToken());

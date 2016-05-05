@@ -125,6 +125,7 @@ private:
 	QHash<QString, QVariant> GlobalSettings;
 	QHash<QString, QHash<QString, QVariant> > PluginsSettings;
 	QList<QString> listOfPlugins;
+	QList<QString> listOfClickablePlugins;
 	QList<PluginInterface*> listOfPluginsPtr;
 	QTimer * saveTimer;
 	XmppHandler * xmppHandler;

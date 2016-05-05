@@ -302,6 +302,7 @@ void PluginManager::OnZtampDisconnect(Ztamp * b)
 void PluginManager::InitApiCalls()
 {
 	DECLARE_API_CALL("getListOfPlugins()", &PluginManager::Api_GetListOfPlugins);
+	DECLARE_API_CALL("getListOfClickablePlugins()", &PluginManager::Api_GetListOfClickablePlugins);
 	DECLARE_API_CALL("getListOfEnabledPlugins()", &PluginManager::Api_GetListOfEnabledPlugins);
 
 	DECLARE_API_CALL("getListOfBunnyPlugins()", &PluginManager::Api_GetListOfBunnyPlugins);
@@ -319,6 +320,25 @@ void PluginManager::InitApiCalls()
 	DECLARE_API_CALL("loadPlugin(filename)", &PluginManager::Api_LoadPlugin);
 	DECLARE_API_CALL("unloadPlugin(name)", &PluginManager::Api_UnloadPlugin);
 	DECLARE_API_CALL("reloadPlugin(name)", &PluginManager::Api_ReloadPlugin);
+}
+
+API_CALL(PluginManager::Api_GetListOfClickablePlugins)
+{
+	Q_UNUSED(hRequest);
+
+	if(!account.HasAccess(Account::AcPlugins,Account::Read))
+		return new ApiManager::ApiError("Access denied");
+
+	QMap<QString, QVariant> list;
+	foreach (PluginInterface * p, listOfPlugins)
+	{
+		if(p->GetEnable())
+		{
+			list.insert(p->GetName(), p->GetAvailableClicks().join(","));
+		}
+	}
+
+	return new ApiManager::ApiMappedList(list);
 }
 
 API_CALL(PluginManager::Api_GetListOfPlugins)

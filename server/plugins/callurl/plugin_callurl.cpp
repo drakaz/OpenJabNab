@@ -14,7 +14,7 @@
 
 Q_EXPORT_PLUGIN2(plugin_callurl, PluginCallURL)
 
-PluginCallURL::PluginCallURL():PluginInterface("callurl", "Plugin to call an URL")
+PluginCallURL::PluginCallURL():PluginInterface("callurl", "Plugin to call an URL", BunnyPlugin, QStringList () << "OnAllClick")
 {
 }
 

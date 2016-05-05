@@ -9,7 +9,7 @@
 
 Q_EXPORT_PLUGIN2(plugin_clock, PluginClock)
 
-PluginClock::PluginClock():PluginInterface("clock", "Clock",BunnyPlugin)
+PluginClock::PluginClock():PluginInterface("clock", "Clock",BunnyPlugin, QStringList () << "OnAllClick")
 {
 	Cron::Register(this, 60, 0, 0, NULL);
 	// Check available folders

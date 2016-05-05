@@ -19,7 +19,7 @@
 
 Q_EXPORT_PLUGIN2(plugin_weather, PluginWeather)
 
-PluginWeather::PluginWeather():PluginInterface("weather", "Weather", BunnyZtampPlugin)
+PluginWeather::PluginWeather():PluginInterface("weather", "Weather", BunnyZtampPlugin, QStringList () << "OnSingleClick")
 {
 	std::auto_ptr<QDir> dir(GetLocalHTTPFolder());
 	if(dir.get())

@@ -19,7 +19,7 @@
 
 Q_EXPORT_PLUGIN2(plugin_airquality, PluginAirquality)
 
-PluginAirquality::PluginAirquality():PluginInterface("airquality", "Air quality plugin", BunnyZtampPlugin)
+PluginAirquality::PluginAirquality():PluginInterface("airquality", "Air quality plugin", BunnyZtampPlugin, QStringList () << "OnSingleClick")
 {
 	std::auto_ptr<QDir> dir(GetLocalHTTPFolder());
 	if(dir.get())

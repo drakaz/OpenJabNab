@@ -21,7 +21,7 @@
 
 Q_EXPORT_PLUGIN2(plugin_ratp, PluginRatp)
 
-PluginRatp::PluginRatp():PluginInterface("ratp", "RATP : Prochains passages")
+PluginRatp::PluginRatp():PluginInterface("ratp", "RATP : Prochains passages", BunnyPlugin, QStringList () << "OnSingleClick")
 {
 }
 

@@ -23,7 +23,7 @@ Q_EXPORT_PLUGIN2(plugin_blague, PluginJokes)
 // +/- 20% - 30min => rand(24,36)
 #define RANDOMIZEDRATIO 20
 
-PluginJokes::PluginJokes():PluginInterface("jokes", "Jokes",BunnyZtampPlugin) {}
+PluginJokes::PluginJokes():PluginInterface("jokes", "Jokes",BunnyZtampPlugin, QStringList () << "OnAllClick") {}
 
 PluginJokes::~PluginJokes() {}
 

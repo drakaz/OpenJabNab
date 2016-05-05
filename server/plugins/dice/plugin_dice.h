@@ -12,7 +12,6 @@ public:
 	PluginDice();
 	virtual ~PluginDice();
 	bool OnAllClick(Bunny *);
-
 };
 
 #endif

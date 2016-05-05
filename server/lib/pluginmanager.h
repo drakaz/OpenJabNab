@@ -41,6 +41,7 @@ public:
 	void OnZtampDisconnect(Ztamp *);
 
 	QList<PluginInterface *> const& GetListOfPlugins() const;
+	QList<PluginInterface *> const& GetListOfClickablePlugins() const;
 	PluginInterface * GetPluginByName(QString const& name) const;
 
 	// API
@@ -71,6 +72,7 @@ private:
 
 	// API
 	API_CALL(Api_GetListOfPlugins);
+	API_CALL(Api_GetListOfClickablePlugins);
 	API_CALL(Api_GetListOfEnabledPlugins);
 
 	API_CALL(Api_GetListOfBunnyPlugins);

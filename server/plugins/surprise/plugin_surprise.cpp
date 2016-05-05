@@ -9,7 +9,7 @@ Q_EXPORT_PLUGIN2(plugin_surprise, PluginSurprise)
 // +/- 20% - 30min => rand(24,36)
 #define RANDOMIZEDRATIO 20
 
-PluginSurprise::PluginSurprise():PluginInterface("surprise", "Send random mp3 at random intervals",BunnyPlugin) {}
+PluginSurprise::PluginSurprise():PluginInterface("surprise", "Send random mp3 at random intervals",BunnyPlugin, QStringList () << "OnAllClick") {}
 
 PluginSurprise::~PluginSurprise() {}
 

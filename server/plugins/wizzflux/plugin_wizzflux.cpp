@@ -13,7 +13,7 @@
 
 Q_EXPORT_PLUGIN2(plugin_wizzflux, PluginWizzflux)
 
-PluginWizzflux::PluginWizzflux():PluginInterface("wizzflux", "Various Flux by Wizz.cc", BunnyZtampPlugin) {
+PluginWizzflux::PluginWizzflux():PluginInterface("wizzflux", "Various Flux by Wizz.cc", BunnyZtampPlugin, QStringList () << "OnAllClick") {
 	Flist = GetSettings("ListFlux", QStringList()).toStringList();
 	if(Flist.count() == 0)
 	{

@@ -28,7 +28,7 @@ public:
 	enum ClickType { SingleClick = 0, DoubleClick, TripleClick, QuadrupleClick, QuintupleClick, AllClick};
 	enum PluginType { RequiredPlugin, SystemPlugin, BunnyPlugin, ZtampPlugin, BunnyZtampPlugin};
 
-	PluginInterface(QString name, QString visualName = QString(), PluginType type = BunnyPlugin);
+	PluginInterface(QString name, QString visualName = QString(), PluginType type = BunnyPlugin, QStringList availableClicks = QStringList ());
 	virtual ~PluginInterface();
 	
 	// Called to init plugin, return false if something is wrong
@@ -79,6 +79,9 @@ public:
 	// Plugin type
 	int GetType() const;
 
+	// Plugin available click
+	QStringList GetAvailableClicks() const;
+
 protected:
 	void SetEnable(bool);
 	QDir * GetLocalHTTPFolder() const;
@@ -90,6 +93,7 @@ private:
 	QString pluginName;
 	PluginType pluginType;
 	QString pluginVisualName;
+	QStringList pluginAvailableClicks;
 	bool pluginEnable;
 	QString httpFolder;
 };

@@ -131,39 +131,45 @@ $plugins = $ojnAPI->getListOfPlugins(false);
 $bunnyPlugins = $ojnAPI->getListOfBunnyEnabledPlugins(false);
 $actifs = $ojnAPI->bunnyListOfPlugins($_SESSION['bunny'],false);
 $clicks = $ojnAPI->getApiList("bunny/".$_SESSION['bunny']."/getClickPlugins?".$ojnAPI->getToken());
+$clickable = $ojnAPI->getApiList("plugins/getListOfClickablePlugins?".$ojnAPI->getToken());
 ?>
 Nom : <input type="text" name="bunny_name" value="<?php echo $_SESSION['bunny_name']; ?>"><input type="submit" value="Enregistrer">
 </form><br /><br />
 <form method="get">
 Plugin simple click : <select name="single">
 <option value="none">Aucun</option>
-<?php foreach($actifs as $plugin) { ?>
-<option value="<?php echo $plugin; ?>" <?php echo ($plugin == $clicks[0] ? ' selected="selected"' : '') ?>><?php echo $plugins[$plugin]; ?></option>
-<?php } ?>
+<?php foreach($clickable as $plugin) {
+if (in_array('OnSingleClick', explode(",", $plugin->value)) or in_array('OnAllClick', explode(",", $plugin->value))) { ?>
+<option value="<?php echo $plugin->key; ?>" <?php echo ($plugin->key == $clicks[0] ? ' selected="selected"' : '') ?>><?php echo $plugins["$plugin->key"]; ?></option>
+<?php }} ?>
 </select><br />
 Plugin double click : <select name="double">
 <option value="none">Aucun</option>
-<?php foreach($actifs as $plugin) { ?>
-<option value="<?php echo $plugin; ?>" <?php echo ($plugin == $clicks[1] ? ' selected="selected"' : '') ?>><?php echo $plugins[$plugin]; ?></option>
-<?php } ?>
+<?php foreach($clickable as $plugin) {
+if (in_array('OnDoubleClick', explode(",", $plugin->value)) or in_array('OnAllClick', explode(",", $plugin->value))) { ?>
+<option value="<?php echo $plugin->key; ?>" <?php echo ($plugin->key == $clicks[1] ? ' selected="selected"' : '') ?>><?php echo $plugins["$plugin->key"]; ?></option>
+<?php }} ?>
 </select><br />
 Plugin triple click : <select name="triple">
 <option value="none">Aucun</option>
-<?php foreach($actifs as $plugin) { ?>
-<option value="<?php echo $plugin; ?>" <?php echo ($plugin == $clicks[2] ? ' selected="selected"' : '') ?>><?php echo $plugins[$plugin]; ?></option>
-<?php } ?>
+<?php foreach($clickable as $plugin) {
+if (in_array('OnTripleClick', explode(",", $plugin->value)) or in_array('OnAllClick', explode(",", $plugin->value))) { ?>
+<option value="<?php echo $plugin->key; ?>" <?php echo ($plugin->key == $clicks[2] ? ' selected="selected"' : '') ?>><?php echo $plugins["$plugin->key"]; ?></option>
+<?php }} ?>
 </select><br />
 Plugin quadruple click : <select name="quadruple">
 <option value="none">Aucun</option>
-<?php foreach($actifs as $plugin) { ?>
-<option value="<?php echo $plugin; ?>" <?php echo ($plugin == $clicks[3] ? ' selected="selected"' : '') ?>><?php echo $plugins[$plugin]; ?></option>
-<?php } ?>
+<?php foreach($clickable as $plugin) {
+if (in_array('OnQuadrupleClick', explode(",", $plugin->value)) or in_array('OnAllClick', explode(",", $plugin->value))) { ?>
+<option value="<?php echo $plugin->key; ?>" <?php echo ($plugin->key == $clicks[3] ? ' selected="selected"' : '') ?>><?php echo $plugins["$plugin->key"]; ?></option>
+<?php }} ?>
 </select><br />
 Plugin quintuple click : <select name="quintuple">
 <option value="none">Aucun</option>
-<?php foreach($actifs as $plugin) { ?>
-<option value="<?php echo $plugin; ?>" <?php echo ($plugin == $clicks[4] ? ' selected="selected"' : '') ?>><?php echo $plugins[$plugin]; ?></option>
-<?php } ?>
+<?php foreach($clickable as $plugin) {
+if (in_array('OnQuintupleClick', explode(",", $plugin->value)) or in_array('OnAllClick', explode(",", $plugin->value))) { ?>
+<option value="<?php echo $plugin->key; ?>" <?php echo ($plugin->key == $clicks[4] ? ' selected="selected"' : '') ?>><?php echo $plugins["$plugin->key"]; ?></option>
+<?php }} ?>
 </select><br />
 <input type="submit" value="Enregistrer">
 </form><br />

@@ -8,7 +8,7 @@
 
 Q_EXPORT_PLUGIN2(plugin_dice, PluginDice)
 
-PluginDice::PluginDice():PluginInterface("dice", "Dice roll", BunnyZtampPlugin)
+PluginDice::PluginDice():PluginInterface("dice", "Dice roll", BunnyZtampPlugin, QStringList () << "OnAllClick")
 {
 	// Initialize the randomizer
 	srand(time(NULL));

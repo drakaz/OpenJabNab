@@ -9,7 +9,7 @@
 
 Q_EXPORT_PLUGIN2(plugin_webradio, PluginWebradio)
 
-PluginWebradio::PluginWebradio():PluginInterface("webradio", "WebRadio", BunnyZtampPlugin)
+PluginWebradio::PluginWebradio():PluginInterface("webradio", "WebRadio", BunnyZtampPlugin, QStringList () << "OnAllClick")
 {
 	presets.clear();
 	presets.insert("Ado FM", "http://ice3.infomaniak.ch/start-adofm-high.mp3");

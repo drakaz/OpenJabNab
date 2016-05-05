@@ -1,5 +1,5 @@
 
-inline PluginInterface::PluginInterface(QString name, QString visualName, PluginType type):pluginName(name), pluginType(type)
+inline PluginInterface::PluginInterface(QString name, QString visualName, PluginType type, QStringList availableClicks):pluginName(name), pluginType(type), pluginAvailableClicks(availableClicks)
 {
 	// The visual name is more user-friendly (for visual-side only)
 	if(visualName != QString())
@@ -53,6 +53,12 @@ inline bool PluginInterface::GetEnable() const
 inline int PluginInterface::GetType() const
 {
 	return pluginType;
+}
+
+// Plugin available click
+inline QStringList PluginInterface::GetAvailableClicks() const
+{
+	return pluginAvailableClicks;
 }
 
 // Plugin enable/disable functions

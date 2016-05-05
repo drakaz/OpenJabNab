@@ -18,7 +18,7 @@
 
 Q_EXPORT_PLUGIN2(plugin_ephemeride, PluginEphemeride)
 
-PluginEphemeride::PluginEphemeride():PluginInterface("ephemeride", "Ephemeride",BunnyPlugin) {}
+PluginEphemeride::PluginEphemeride():PluginInterface("ephemeride", "Ephemeride",BunnyPlugin, QStringList () << "OnSingleClick") {}
 
 PluginEphemeride::~PluginEphemeride()
 {
