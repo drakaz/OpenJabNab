@@ -90,6 +90,9 @@ void XmppHandler::HandleBunnyXmppMessage()
 		{
 			// Single Click : <button xmlns="violet:nabaztag:button"><clic>1</clic></button>
 			// Double Click : <button xmlns="violet:nabaztag:button"><clic>2</clic></button>
+			// Triple Click : <button xmlns="violet:nabaztag:button"><clic>5</clic></button>
+			// Quadruple Click : <button xmlns="violet:nabaztag:button"><clic>6</clic></button>
+			// Quintuple Click : <button xmlns="violet:nabaztag:button"><clic>7</clic></button>
 			QRegExp rx("<clic>([0-9]+)</clic>");
 			if (rx.indexIn(message) != -1)
 			{
@@ -98,6 +101,12 @@ void XmppHandler::HandleBunnyXmppMessage()
 					handled = bunny->OnClick(PluginInterface::SingleClick);
 				else if (value == 2)
 					handled = bunny->OnClick(PluginInterface::DoubleClick);
+				else if (value == 5)
+					handled = bunny->OnClick(PluginInterface::TripleClick);
+				else if (value == 6)
+					handled = bunny->OnClick(PluginInterface::QuadrupleClick);
+				else if (value == 7)
+					handled = bunny->OnClick(PluginInterface::QuintupleClick);
 				else
 					LogWarning(QString("Unable to parse button/click message : %1").arg(QString(data)));
 			}

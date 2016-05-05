@@ -20,12 +20,18 @@
 
 #define SINGLE_CLICK_PLUGIN_SETTINGNAME "singleClickPlugin"
 #define DOUBLE_CLICK_PLUGIN_SETTINGNAME "doubleClickPlugin"
+#define TRIPLE_CLICK_PLUGIN_SETTINGNAME "tripleClickPlugin"
+#define QUADRUPLE_CLICK_PLUGIN_SETTINGNAME "quadrupleClickPlugin"
+#define QUINTUPLE_CLICK_PLUGIN_SETTINGNAME "quintupleClickPlugin"
 
 Bunny::Bunny(QByteArray const& bunnyID)
 {
 	// Init click plugins
 	singleClickPlugin = NULL;
 	doubleClickPlugin = NULL;
+	tripleClickPlugin = NULL;
+	quadrupleClickPlugin = NULL;
+	quintupleClickPlugin = NULL;
 
 	// Check bunnies folder
 	QDir bunniesDir = QDir(QCoreApplication::applicationDirPath());
@@ -278,7 +284,7 @@ void Bunny::LoadConfig()
 			LogError(QString("Bunny %1 has invalid plugin (%2)!").arg(QString(GetID()), s));
 	}
 
-	// Load single/doubleClickPlugin preferences
+	// Load single/double/triple/quadruple/quintupleClickPlugin preferences
 	if(GlobalSettings.contains(SINGLE_CLICK_PLUGIN_SETTINGNAME))
 	{
 		QString pluginName = GlobalSettings.value(SINGLE_CLICK_PLUGIN_SETTINGNAME).toString();
@@ -312,6 +318,59 @@ void Bunny::LoadConfig()
 	else
 	{
 		doubleClickPlugin = NULL;
+	}
+	if(GlobalSettings.contains(TRIPLE_CLICK_PLUGIN_SETTINGNAME))
+	{
+		QString pluginName = GlobalSettings.value(TRIPLE_CLICK_PLUGIN_SETTINGNAME).toString();
+		PluginInterface * plugin = PluginManager::Instance().GetPluginByName(pluginName);
+		QString error = CheckPlugin(plugin, true);
+		if(error.isNull())
+			tripleClickPlugin = plugin;
+		else
+		{
+			tripleClickPlugin = NULL;
+			LogError(error.arg(pluginName));
+		}
+	}
+	else
+	{
+		tripleClickPlugin = NULL;
+	}
+
+	if(GlobalSettings.contains(QUADRUPLE_CLICK_PLUGIN_SETTINGNAME))
+	{
+		QString pluginName = GlobalSettings.value(QUADRUPLE_CLICK_PLUGIN_SETTINGNAME).toString();
+		PluginInterface * plugin = PluginManager::Instance().GetPluginByName(pluginName);
+		QString error = CheckPlugin(plugin, true);
+		if(error.isNull())
+			quadrupleClickPlugin = plugin;
+		else
+		{
+			quadrupleClickPlugin = NULL;
+			LogError(error.arg(pluginName));
+		}
+	}
+	else
+	{
+		quadrupleClickPlugin = NULL;
+	}
+
+	if(GlobalSettings.contains(QUINTUPLE_CLICK_PLUGIN_SETTINGNAME))
+	{
+		QString pluginName = GlobalSettings.value(QUINTUPLE_CLICK_PLUGIN_SETTINGNAME).toString();
+		PluginInterface * plugin = PluginManager::Instance().GetPluginByName(pluginName);
+		QString error = CheckPlugin(plugin, true);
+		if(error.isNull())
+			quintupleClickPlugin = plugin;
+		else
+		{
+			quintupleClickPlugin = NULL;
+			LogError(error.arg(pluginName));
+		}
+	}
+	else
+	{
+		quintupleClickPlugin = NULL;
 	}
 
 	// Added to config file, listOfRFIDTags
@@ -503,6 +562,66 @@ void Bunny::AddPlugin(PluginInterface * p)
 	{
 		doubleClickPlugin = NULL;
 	}
+
+	if(GlobalSettings.contains(TRIPLE_CLICK_PLUGIN_SETTINGNAME))
+	{
+		QString pluginName = GlobalSettings.value(TRIPLE_CLICK_PLUGIN_SETTINGNAME).toString();
+		if(p->GetName() == pluginName)
+		{
+			QString error = CheckPlugin(p, true);
+			if(error.isNull())
+				tripleClickPlugin = p;
+			else
+			{
+				tripleClickPlugin = NULL;
+				LogError(error.arg(pluginName));
+			}
+		}
+	}
+	else
+	{
+		tripleClickPlugin = NULL;
+	}
+
+	if(GlobalSettings.contains(QUADRUPLE_CLICK_PLUGIN_SETTINGNAME))
+	{
+		QString pluginName = GlobalSettings.value(QUADRUPLE_CLICK_PLUGIN_SETTINGNAME).toString();
+		if(p->GetName() == pluginName)
+		{
+			QString error = CheckPlugin(p, true);
+			if(error.isNull())
+				quadrupleClickPlugin = p;
+			else
+			{
+				quadrupleClickPlugin = NULL;
+				LogError(error.arg(pluginName));
+			}
+		}
+	}
+	else
+	{
+		quadrupleClickPlugin = NULL;
+	}
+
+	if(GlobalSettings.contains(QUINTUPLE_CLICK_PLUGIN_SETTINGNAME))
+	{
+		QString pluginName = GlobalSettings.value(QUINTUPLE_CLICK_PLUGIN_SETTINGNAME).toString();
+		if(p->GetName() == pluginName)
+		{
+			QString error = CheckPlugin(p, true);
+			if(error.isNull())
+				quintupleClickPlugin = p;
+			else
+			{
+				quintupleClickPlugin = NULL;
+				LogError(error.arg(pluginName));
+			}
+		}
+	}
+	else
+	{
+		quintupleClickPlugin = NULL;
+	}
 }
 
 // API Remove plugin to this bunny
@@ -517,6 +636,18 @@ void Bunny::RemovePlugin(PluginInterface * p)
 		if(p == doubleClickPlugin)
 		{
 			doubleClickPlugin = NULL;
+		}
+		if(p == tripleClickPlugin)
+		{
+			tripleClickPlugin = NULL;
+		}
+		if(p == quadrupleClickPlugin)
+		{
+			quadrupleClickPlugin = NULL;
+		}
+		if(p == quintupleClickPlugin)
+		{
+			quintupleClickPlugin = NULL;
 		}
 		listOfPlugins.removeAll(p->GetName());
 		listOfPluginsPtr.removeAll(p);
@@ -606,17 +737,45 @@ void Bunny::XmppBunnyMessage(QByteArray const& data)
 // Called when top button is pushed
 bool Bunny::OnClick(PluginInterface::ClickType type)
 {
+	bool result;
 	if(PluginManager::Instance().OnClick(this, type))
 		return true;
 
 	// Check if registeredClickPlugin is available
 	if(type == PluginInterface::SingleClick && singleClickPlugin)
 	{
-		return singleClickPlugin->OnClick(this, type);
+		result = singleClickPlugin->OnAllClick(this);
+		if (result)
+			return result;
+		return singleClickPlugin->OnSingleClick(this);
 	}
 	if(type == PluginInterface::DoubleClick && doubleClickPlugin)
 	{
-		return doubleClickPlugin->OnClick(this, type);
+		result = doubleClickPlugin->OnAllClick(this);
+		if (result)
+			return result;
+		return doubleClickPlugin->OnDoubleClick(this);
+	}
+	if(type == PluginInterface::TripleClick && tripleClickPlugin)
+	{
+		result = tripleClickPlugin->OnAllClick(this);
+		if (result)
+			return result;
+		return tripleClickPlugin->OnTripleClick(this);
+	}
+	if(type == PluginInterface::QuadrupleClick && quadrupleClickPlugin)
+	{
+		result = quadrupleClickPlugin->OnAllClick(this);
+		if (result)
+			return result;
+		return quadrupleClickPlugin->OnQuadrupleClick(this);
+	}
+	if(type == PluginInterface::QuintupleClick && quintupleClickPlugin)
+	{
+		result = quintupleClickPlugin->OnAllClick(this);
+		if (result)
+			return result;
+		return quintupleClickPlugin->OnQuintupleClick(this);
 	}
 	return false;
 }
@@ -672,6 +831,9 @@ void Bunny::InitApiCalls()
 
 	DECLARE_API_CALL("setSingleClickPlugin(name)", &Bunny::Api_SetSingleClickPlugin);
 	DECLARE_API_CALL("setDoubleClickPlugin(name)", &Bunny::Api_SetDoubleClickPlugin);
+	DECLARE_API_CALL("setTripleClickPlugin(name)", &Bunny::Api_SetTripleClickPlugin);
+	DECLARE_API_CALL("setQuadrupleClickPlugin(name)", &Bunny::Api_SetQuadrupleClickPlugin);
+	DECLARE_API_CALL("setQuintupleClickPlugin(name)", &Bunny::Api_SetQuintupleClickPlugin);
 	DECLARE_API_CALL("getClickPlugins()", &Bunny::Api_GetClickPlugins);
 
 	DECLARE_API_CALL("getListOfKnownRFIDTags()", &Bunny::Api_GetListOfKnownRFIDTags);
@@ -785,6 +947,72 @@ API_CALL(Bunny::Api_SetDoubleClickPlugin)
 	return new ApiManager::ApiOk(QString("Set '%1' as double click plugin").arg(plugin->GetVisualName()));
 }
 
+API_CALL(Bunny::Api_SetTripleClickPlugin)
+{
+	Q_UNUSED(account);
+
+	if(hRequest.GetArg("name") == "none")
+	{
+		RemoveGlobalSetting(TRIPLE_CLICK_PLUGIN_SETTINGNAME);
+		tripleClickPlugin = NULL;
+		return new ApiManager::ApiOk(QString("Removed preferred triple click plugin"));
+	}
+
+	PluginInterface * plugin = PluginManager::Instance().GetPluginByName(hRequest.GetArg("name"));
+
+	QString error = CheckPlugin(plugin, true);
+	if(!error.isNull())
+		return new ApiManager::ApiError(error.arg(hRequest.GetArg("name")));
+
+	tripleClickPlugin = plugin;
+	SetGlobalSetting(TRIPLE_CLICK_PLUGIN_SETTINGNAME, plugin->GetName());
+	return new ApiManager::ApiOk(QString("Set '%1' as triple click plugin").arg(plugin->GetVisualName()));
+}
+
+API_CALL(Bunny::Api_SetQuadrupleClickPlugin)
+{
+	Q_UNUSED(account);
+
+	if(hRequest.GetArg("name") == "none")
+	{
+		RemoveGlobalSetting(QUADRUPLE_CLICK_PLUGIN_SETTINGNAME);
+		quadrupleClickPlugin = NULL;
+		return new ApiManager::ApiOk(QString("Removed preferred quadruple click plugin"));
+	}
+
+	PluginInterface * plugin = PluginManager::Instance().GetPluginByName(hRequest.GetArg("name"));
+
+	QString error = CheckPlugin(plugin, true);
+	if(!error.isNull())
+		return new ApiManager::ApiError(error.arg(hRequest.GetArg("name")));
+
+	quadrupleClickPlugin = plugin;
+	SetGlobalSetting(QUADRUPLE_CLICK_PLUGIN_SETTINGNAME, plugin->GetName());
+	return new ApiManager::ApiOk(QString("Set '%1' as quadruple click plugin").arg(plugin->GetVisualName()));
+}
+
+API_CALL(Bunny::Api_SetQuintupleClickPlugin)
+{
+	Q_UNUSED(account);
+
+	if(hRequest.GetArg("name") == "none")
+	{
+		RemoveGlobalSetting(QUINTUPLE_CLICK_PLUGIN_SETTINGNAME);
+		quintupleClickPlugin = NULL;
+		return new ApiManager::ApiOk(QString("Removed preferred quintuple click plugin"));
+	}
+
+	PluginInterface * plugin = PluginManager::Instance().GetPluginByName(hRequest.GetArg("name"));
+
+	QString error = CheckPlugin(plugin, true);
+	if(!error.isNull())
+		return new ApiManager::ApiError(error.arg(hRequest.GetArg("name")));
+
+	quintupleClickPlugin = plugin;
+	SetGlobalSetting(QUINTUPLE_CLICK_PLUGIN_SETTINGNAME, plugin->GetName());
+	return new ApiManager::ApiOk(QString("Set '%1' as quintuple click plugin").arg(plugin->GetVisualName()));
+}
+
 API_CALL(Bunny::Api_GetClickPlugins)
 {
 	Q_UNUSED(account);
@@ -793,6 +1021,9 @@ API_CALL(Bunny::Api_GetClickPlugins)
 	QList<QString> list;
 	list.append(GetGlobalSetting(SINGLE_CLICK_PLUGIN_SETTINGNAME, QString()).toString());
 	list.append(GetGlobalSetting(DOUBLE_CLICK_PLUGIN_SETTINGNAME, QString()).toString());
+	list.append(GetGlobalSetting(TRIPLE_CLICK_PLUGIN_SETTINGNAME, QString()).toString());
+	list.append(GetGlobalSetting(QUADRUPLE_CLICK_PLUGIN_SETTINGNAME, QString()).toString());
+	list.append(GetGlobalSetting(QUINTUPLE_CLICK_PLUGIN_SETTINGNAME, QString()).toString());
 
 	return new ApiManager::ApiList(list);
 }

@@ -196,7 +196,25 @@ bool PluginManager::OnClick(Bunny * b, PluginInterface::ClickType type)
 	{
 		if(plugin->GetEnable())
 		{
-			if(plugin->OnClick(b, type))
+			if(type == PluginInterface::SingleClick and plugin->OnAllClick(b))
+				return true;
+			if(type == PluginInterface::DoubleClick and plugin->OnAllClick(b))
+				return true;
+			if(type == PluginInterface::TripleClick and plugin->OnAllClick(b))
+				return true;
+			if(type == PluginInterface::QuadrupleClick and plugin->OnAllClick(b))
+				return true;
+			if(type == PluginInterface::QuintupleClick and plugin->OnAllClick(b))
+				return true;
+			if(type == PluginInterface::SingleClick and plugin->OnSingleClick(b))
+				return true;
+			if(type == PluginInterface::DoubleClick and plugin->OnDoubleClick(b))
+				return true;
+			if(type == PluginInterface::TripleClick and plugin->OnTripleClick(b))
+				return true;
+			if(type == PluginInterface::QuadrupleClick and plugin->OnQuadrupleClick(b))
+				return true;
+			if(type == PluginInterface::QuintupleClick and plugin->OnQuintupleClick(b))
 				return true;
 		}
 	}

@@ -25,7 +25,7 @@ class PluginInterface : public QObject, public PluginApiHandler
 {
 	friend class PluginManager;
 public:
-	enum ClickType { SingleClick = 0, DoubleClick};
+	enum ClickType { SingleClick = 0, DoubleClick, TripleClick, QuadrupleClick, QuintupleClick, AllClick};
 	enum PluginType { RequiredPlugin, SystemPlugin, BunnyPlugin, ZtampPlugin, BunnyZtampPlugin};
 
 	PluginInterface(QString name, QString visualName = QString(), PluginType type = BunnyPlugin);
@@ -44,7 +44,12 @@ public:
 
 	// Bunny's Messages
 	virtual void OnInitPacket(const Bunny *, AmbientPacket &, SleepPacket &) {}
-	virtual bool OnClick(Bunny *, ClickType) { return false; }
+	virtual bool OnAllClick(Bunny *) { return false; }
+	virtual bool OnSingleClick(Bunny *) { return false; }
+	virtual bool OnDoubleClick(Bunny *) { return false; }
+	virtual bool OnTripleClick(Bunny *) { return false; }
+	virtual bool OnQuadrupleClick(Bunny *) { return false; }
+	virtual bool OnQuintupleClick(Bunny *) { return false; }
 	virtual bool OnEarsMove(Bunny *, int, int) { return false; }
 	virtual bool OnRFID(Bunny *, QByteArray const&) { return false; }
 	virtual bool OnRFID(Ztamp *, Bunny *) { return false; }
