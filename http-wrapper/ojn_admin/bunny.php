@@ -16,11 +16,17 @@ if(!empty($_GET['b'])) {
 } elseif(isset($_GET['resetown'])) {
 	$_SESSION['message'] = $ojnAPI->getApiString("bunny/".$_SESSION['bunny']."/resetOwner?".$ojnAPI->getToken());
 	header('Location: bunny.php');
-} elseif(!empty($_GET['single']) && !empty($_GET['double'])) {
+} elseif(!empty($_GET['single']) && !empty($_GET['double']) && !empty($_GET['triple']) && !empty($_GET['quadruple']) && !empty($_GET['quintuple'])) {
 	$msg = $ojnAPI->getApiString("bunny/".$_SESSION['bunny']."/setSingleClickPlugin?name=".$_GET['single']."&".$ojnAPI->getToken());
 	$msg1 = $ojnAPI->getApiString("bunny/".$_SESSION['bunny']."/setDoubleClickPlugin?name=".$_GET['double']."&".$ojnAPI->getToken());
+	$msg2 = $ojnAPI->getApiString("bunny/".$_SESSION['bunny']."/setTripleClickPlugin?name=".$_GET['triple']."&".$ojnAPI->getToken());
+	$msg3 = $ojnAPI->getApiString("bunny/".$_SESSION['bunny']."/setQuadrupleClickPlugin?name=".$_GET['quadruple']."&".$ojnAPI->getToken());
+	$msg4 = $ojnAPI->getApiString("bunny/".$_SESSION['bunny']."/setQuintupleClickPlugin?name=".$_GET['quintuple']."&".$ojnAPI->getToken());
 	$s = isset($msg['error']) ? $msg['error'] : $msg['ok']. '<br />';
 	$s .= isset($msg1['error']) ? $msg1['error'] : $msg1['ok'];
+	$s .= isset($msg2['error']) ? $msg2['error'] : $msg2['ok'];
+	$s .= isset($msg3['error']) ? $msg3['error'] : $msg3['ok'];
+	$s .= isset($msg4['error']) ? $msg4['error'] : $msg4['ok'];
 	$msg = isset($msg['error']) || isset($msg1['error']) ? 'error' : 'ok';
 		$_SESSION['message'] = array($msg=>$s);
 	header('Location: bunny.php');
@@ -139,6 +145,24 @@ Plugin double click : <select name="double">
 <option value="none">Aucun</option>
 <?php foreach($actifs as $plugin) { ?>
 <option value="<?php echo $plugin; ?>" <?php echo ($plugin == $clicks[1] ? ' selected="selected"' : '') ?>><?php echo $plugins[$plugin]; ?></option>
+<?php } ?>
+</select><br />
+Plugin triple click : <select name="triple">
+<option value="none">Aucun</option>
+<?php foreach($actifs as $plugin) { ?>
+<option value="<?php echo $plugin; ?>" <?php echo ($plugin == $clicks[2] ? ' selected="selected"' : '') ?>><?php echo $plugins[$plugin]; ?></option>
+<?php } ?>
+</select><br />
+Plugin quadruple click : <select name="quadruple">
+<option value="none">Aucun</option>
+<?php foreach($actifs as $plugin) { ?>
+<option value="<?php echo $plugin; ?>" <?php echo ($plugin == $clicks[3] ? ' selected="selected"' : '') ?>><?php echo $plugins[$plugin]; ?></option>
+<?php } ?>
+</select><br />
+Plugin quintuple click : <select name="quintuple">
+<option value="none">Aucun</option>
+<?php foreach($actifs as $plugin) { ?>
+<option value="<?php echo $plugin; ?>" <?php echo ($plugin == $clicks[4] ? ' selected="selected"' : '') ?>><?php echo $plugins[$plugin]; ?></option>
 <?php } ?>
 </select><br />
 <input type="submit" value="Enregistrer">
