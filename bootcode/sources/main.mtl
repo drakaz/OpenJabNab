@@ -4889,6 +4889,9 @@ fun controlwait=
 		earStop 0;
 		if ev==BUTTON_CLIC then ( XmppSessionSendButtonMsg ev 0 nil) // debug
 		else if ev==BUTTON_DCLIC then (controlsound midi_ack;XmppSessionSendButtonMsg ev 0 nil) //ackall
+		else if ev==BUTTON_TCLIC then (controlsound midi_ack;XmppSessionSendButtonMsg ev 0 nil) //ackall
+		else if ev==BUTTON_QCLIC then (controlsound midi_ack;XmppSessionSendButtonMsg ev 0 nil) //ackall
+		else if ev==BUTTON_CCLIC then (controlsound midi_ack;XmppSessionSendButtonMsg ev 0 nil) //ackall
 		else if ev==BUTTON_LCLIC then _controlrecord 0	//  //back ou record
 		else if ev==BUTTON_DLCLIC then _controlrecord 1	// //back ou record
 		else if ev&0x8000 then (

@@ -7,6 +7,9 @@ const BUTTON_CLIC=1;;
 const BUTTON_DCLIC=2;;
 const BUTTON_LCLIC=3;;
 const BUTTON_DLCLIC=4;;
+const BUTTON_TCLIC=5;;
+const BUTTON_QCLIC=6;;
+const BUTTON_CCLIC=7;;
 const T_DCLIC=500;;
 const T_LCLIC=1500;;
 
@@ -40,7 +43,7 @@ fun buttonloop=
 		)
 		else if ((time_ms-buttontime)>=T_DCLIC)&&!buttonlast then
 		(
-			set buttonevent=if buttonclicn==1 then BUTTON_CLIC else BUTTON_DCLIC;
+			set buttonevent=if buttonclicn==1 then BUTTON_CLIC else if buttonclicn==2 then BUTTON_DCLIC else if buttonclicn==3 then BUTTON_TCLIC else if buttonclicn==4 then BUTTON_QCLIC else BUTTON_CCLIC;
 			set buttontime=nil
 		)
 	);;
