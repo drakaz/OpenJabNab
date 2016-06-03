@@ -104,68 +104,71 @@ void PluginJokes::getJokes(Bunny * b)
 		dir->cd("lang/" + lang + "/sources");
 		dir->setNameFilters(QStringList("*.txt"));
 		QStringList list = dir->entryList(QDir::Files|QDir::NoDotAndDotDot);
-		// Get a random file
-		QString file = list.at(qrand()%list.count());
-		QString filepath = dir->absoluteFilePath(file);
-		// LogDebug("Using joke file : " + filepath);
-		// Get pre message if exist
-		QFile blagueFilePre (filepath + ".pre");
-		if (blagueFilePre.exists())
-		{
-			blagueFilePre.open(QFile::ReadOnly);
-			QTextStream preflux(&blagueFilePre);
-			preflux.setCodec(QTextCodec::codecForName("UTF-8"));
-			QString premessage = preflux.readLine();
-			// LogDebug("Premessage found : " + premessage);
-			QByteArray currentBlague = TTSManager::CreateNewSound(premessage, "Claire");
-			message = "MU " + currentBlague + "\nPL 3\nMW\n";
-			blagueFilePre.close();
-		}
+                if (list.size() > 0)
+                {
+			// Get a random file
+			QString file = list.at(qrand()%list.count());
+			QString filepath = dir->absoluteFilePath(file);
+			// LogDebug("Using joke file : " + filepath);
+			// Get pre message if exist
+			QFile blagueFilePre (filepath + ".pre");
+			if (blagueFilePre.exists())
+			{
+				blagueFilePre.open(QFile::ReadOnly);
+				QTextStream preflux(&blagueFilePre);
+				preflux.setCodec(QTextCodec::codecForName("UTF-8"));
+				QString premessage = preflux.readLine();
+				// LogDebug("Premessage found : " + premessage);
+				QByteArray currentBlague = TTSManager::CreateNewSound(premessage, "Claire");
+				message = "MU " + currentBlague + "\nPL 3\nMW\n";
+				blagueFilePre.close();
+			}
 
-		int line_count=0;
-		QFile blagueFile(filepath);
-		if(blagueFile.open(QFile::ReadOnly))
-		{
-			QTextStream flux(&blagueFile);
-			flux.setCodec(QTextCodec::codecForName("UTF-8"));
-			// First count lines in file
-			while( !flux.atEnd())
+			int line_count=0;
+			QFile blagueFile(filepath);
+			if(blagueFile.open(QFile::ReadOnly))
 			{
-				flux.readLine();
-				line_count++;
-			}
-			// Random line
-			qsrand(QDateTime::currentDateTime ().toTime_t ());
-			int random = qrand() % line_count;
-			// Seek to begin
-			flux.seek(0);
-			// Read again and stop on the chosen line
-			int loop = 0;
-			while( !flux.atEnd())
-			{
-				QString blagounette = flux.readLine();
-				if (loop == random)
+				QTextStream flux(&blagueFile);
+				flux.setCodec(QTextCodec::codecForName("UTF-8"));
+				// First count lines in file
+				while( !flux.atEnd())
 				{
-					// LogDebug("Selected jokes : " + blagounette); 
-					QRegExp sep("[. ][:][- ]+");
-					QStringList splitted_blagounette = blagounette.split(sep);
-					foreach (const QString &word, splitted_blagounette) {
-						if (!word.trimmed().isEmpty())
-						{
-							QByteArray file = TTSManager::CreateNewSound(word.trimmed(), "Claire");
-							message += "MU " + file + "\nPL 3\nMW\n";
-						}
-					}
-					break;
+					flux.readLine();
+					line_count++;
 				}
-				loop++;
-			}
-			blagueFile.close();
-			if(b->IsConnected())
-			{
-				QByteArray file = GetBroadcastHTTPPath("mp3/joke_sound.mp3");
-				message += "MU "+file+"\nPL 3\nMW\n";
-				b->SendPacket(MessagePacket(message));
+				// Random line
+				qsrand(QDateTime::currentDateTime ().toTime_t ());
+				int random = qrand() % line_count;
+				// Seek to begin
+				flux.seek(0);
+				// Read again and stop on the chosen line
+				int loop = 0;
+				while( !flux.atEnd())
+				{
+					QString blagounette = flux.readLine();
+					if (loop == random)
+					{
+						// LogDebug("Selected jokes : " + blagounette); 
+						QRegExp sep("[. ][:][- ]+");
+						QStringList splitted_blagounette = blagounette.split(sep);
+						foreach (const QString &word, splitted_blagounette) {
+							if (!word.trimmed().isEmpty())
+							{
+								QByteArray file = TTSManager::CreateNewSound(word.trimmed(), "Claire");
+								message += "MU " + file + "\nPL 3\nMW\n";
+							}
+						}
+						break;
+					}
+					loop++;
+				}
+				blagueFile.close();
+				if(b->IsConnected())
+				{
+					QByteArray file = GetBroadcastHTTPPath("mp3/joke_sound.mp3");
+					message += "MU "+file+"\nPL 3\nMW\n";
+					b->SendPacket(MessagePacket(message));
+				}
 			}
 		}
 	}
